@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!--
+  BASE LANDING PAGE TEMPLATE
+  ==========================
+  This is the shared starting point for all client sites in sites/<client-name>/.
+  Do NOT delete or heavily specialize this file — copy it into a new client folder
+  and adapt content/colors/fonts there instead. Keep this template generic.
+
+  Structure: Hero -> About -> Services -> Gallery -> Testimonials -> Contact -> Footer
+  Stack: Plain HTML + Tailwind CSS via CDN (no build step).
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Name | Tagline</title>
+
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Optional: customize Tailwind theme colors here per client -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              light: "#f5f5f4",
+              DEFAULT: "#4f46e5",
+              dark: "#312e81",
+            },
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-white text-gray-800 antialiased">
+
+  <!-- ============ NAV ============ -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
+    <nav class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+      <a href="#hero" class="text-xl font-bold text-brand">Business Name</a>
+      <ul class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <li><a href="#about" class="hover:text-brand">About</a></li>
+        <li><a href="#services" class="hover:text-brand">Services</a></li>
+        <li><a href="#gallery" class="hover:text-brand">Gallery</a></li>
+        <li><a href="#testimonials" class="hover:text-brand">Testimonials</a></li>
+        <li><a href="#contact" class="hover:text-brand">Contact</a></li>
+      </ul>
+      <a href="#contact" class="hidden md:inline-block bg-brand text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-brand-dark transition">
+        Get in Touch
+      </a>
+    </nav>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section id="hero" class="bg-brand-light">
+    <div class="max-w-6xl mx-auto px-6 py-24 md:py-32 text-center">
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-gray-900">
+        Business Name
+      </h1>
+      <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+        A short, compelling tagline that explains what this business does and why it matters.
+      </p>
+      <div class="mt-8 flex justify-center gap-4">
+        <a href="#contact" class="bg-brand text-white font-semibold px-8 py-3 rounded-full hover:bg-brand-dark transition">
+          Primary Call to Action
+        </a>
+        <a href="#services" class="border border-gray-300 text-gray-700 font-semibold px-8 py-3 rounded-full hover:border-brand hover:text-brand transition">
+          Learn More
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="max-w-6xl mx-auto px-6 py-20">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">About Us</h2>
+        <p class="text-gray-600 leading-relaxed">
+          Placeholder paragraph describing the business, its story, mission, and what makes it
+          different. Replace with real content provided by the client.
+        </p>
+      </div>
+      <div class="aspect-video bg-gray-100 rounded-2xl flex items-center justify-center text-gray-400">
+        Image / Illustration Placeholder
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section id="services" class="bg-gray-50 py-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Our Services</h2>
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <!-- Repeat this card block per service -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div class="w-12 h-12 rounded-full bg-brand-light flex items-center justify-center mb-4 text-brand font-bold">1</div>
+          <h3 class="font-semibold text-lg mb-2">Service One</h3>
+          <p class="text-gray-600 text-sm">Short description of this service goes here.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div class="w-12 h-12 rounded-full bg-brand-light flex items-center justify-center mb-4 text-brand font-bold">2</div>
+          <h3 class="font-semibold text-lg mb-2">Service Two</h3>
+          <p class="text-gray-600 text-sm">Short description of this service goes here.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div class="w-12 h-12 rounded-full bg-brand-light flex items-center justify-center mb-4 text-brand font-bold">3</div>
+          <h3 class="font-semibold text-lg mb-2">Service Three</h3>
+          <p class="text-gray-600 text-sm">Short description of this service goes here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GALLERY ============ -->
+  <section id="gallery" class="max-w-6xl mx-auto px-6 py-20">
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Gallery</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <!-- Replace each placeholder div with a real <img> when photos are available -->
+      <div class="aspect-square bg-gray-100 rounded-xl"></div>
+      <div class="aspect-square bg-gray-100 rounded-xl"></div>
+      <div class="aspect-square bg-gray-100 rounded-xl"></div>
+      <div class="aspect-square bg-gray-100 rounded-xl"></div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section id="testimonials" class="bg-gray-50 py-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">What Our Clients Say</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <blockquote class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <p class="text-gray-600 italic">"Placeholder testimonial quote number one."</p>
+          <footer class="mt-4 font-semibold text-gray-900">— Client Name</footer>
+        </blockquote>
+        <blockquote class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <p class="text-gray-600 italic">"Placeholder testimonial quote number two."</p>
+          <footer class="mt-4 font-semibold text-gray-900">— Client Name</footer>
+        </blockquote>
+        <blockquote class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <p class="text-gray-600 italic">"Placeholder testimonial quote number three."</p>
+          <footer class="mt-4 font-semibold text-gray-900">— Client Name</footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="max-w-6xl mx-auto px-6 py-20">
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Contact Us</h2>
+    <div class="grid md:grid-cols-2 gap-12">
+      <div class="space-y-4 text-gray-600">
+        <p><span class="font-semibold text-gray-900">Address:</span> 123 Example Street, City</p>
+        <p><span class="font-semibold text-gray-900">Phone:</span> (000) 000-0000</p>
+        <p><span class="font-semibold text-gray-900">Hours:</span> Mon–Fri, 9:00–18:00</p>
+        <p><span class="font-semibold text-gray-900">Social:</span> Instagram · Facebook</p>
+      </div>
+      <form class="space-y-4">
+        <input type="text" placeholder="Your Name" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand" />
+        <input type="email" placeholder="Your Email" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand" />
+        <textarea rows="4" placeholder="Your Message" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand"></textarea>
+        <button type="submit" class="w-full bg-brand text-white font-semibold px-8 py-3 rounded-full hover:bg-brand-dark transition">
+          Send Message
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-gray-900 text-gray-300 py-10">
+    <div class="max-w-6xl mx-auto px-6 text-center text-sm">
+      <p>&copy; <span id="year"></span> Business Name. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
