@@ -42,6 +42,12 @@ infra/           # קונפיגורציית פריסה, סקריפטים
 - סוכן איתור לידים / Meta Graph API — יטופל בנפרד, בהמשך
 - Remote Control מהאייפון — לא נדרש בשלב זה
 
+## Progress tracking
+- After completing any task, update the "מצב נוכחי" section in both `CLAUDE.md` and `docs/project-plan.md`:
+  - Mark the completed task as done.
+  - Add one line stating the current stage number and task name (e.g. "Stage 1, Task: rich brief testing — in progress").
+- Do this automatically, without being asked, as part of finishing the task — before or together with the git commit.
+
 ## Git workflow
 - After finishing any working piece of code, automatically create a git commit with a clear English commit message — do not wait to be asked.
 - This does not apply to changes that touch money/billing/checkout — those still require explicit user approval before any action, per the code conventions above, and should not be auto-committed without that approval.
