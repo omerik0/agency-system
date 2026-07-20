@@ -1,8 +1,8 @@
 # תוכנית פרויקט: מערכת סוכני AI לבניית אתרים ללקוחות
 
-## מצב נוכחי (עדכון אחרון: 20.07.2026, ערב — אחרי הרצה ראשונה מוצלחת)
+## מצב נוכחי (עדכון אחרון: 21.07.2026)
 
-**שלב 0 — תשתית: כמעט הושלם**
+**שלב 0 — תשתית: הושלם במלואו**
 - [x] תיקיית פרויקט: `~/Desktop/Projects/agency-system`
 - [x] `git init` בוצע. **החלטה: כל commit messages באנגלית**, שיחה עצמה בעברית
 - [x] מבנה תיקיות נוצר: `agents/ sites/_template/ db/ infra/ .claude/agents/ docs/`
@@ -11,7 +11,7 @@
 - [x] `.DS_Store` הוסר ממעקב git (`git rm --cached`) אחרי שנכנס בטעות לפני שה-gitignore היה במקום
 - [x] `business-schema.sql` → הועבר ל-`db/`
 - [x] `website-builder.md` (subagent) → הועבר ל-`.claude/agents/`
-- [ ] **DB בפועל עדיין לא נפתח** — צריך: להירשם ב-Supabase, ליצור פרויקט, להריץ את `db/business-schema.sql` ב-SQL Editor, לוודא 4 טבלאות נוצרו
+- [x] **DB בפועל נפתח ב-Supabase** — הפרויקט נוצר, `db/business-schema.sql` הורץ ב-SQL Editor, אומת שכל 4 הטבלאות (`clients`, `projects`, `invoices`, `deployments`) קיימות ונראות ב-Table Editor, RLS מופעל
 
 **שלב 1 — סוכן בניית אתרים: בתהליך, עובד בהצלחה**
 - Claude Code הותקן בהצלחה (Node.js + Homebrew + `npm install -g @anthropic-ai/claude-code`), מחובר עם Claude Pro subscription

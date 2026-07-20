@@ -3,7 +3,7 @@
 הצב קובץ זה בשורש תיקיית הפרויקט על ה-Mac mini. Claude Code טוען אותו אוטומטית כקונטקסט בכל סשן.
 
 ## מצב נוכחי (עדכון אחרון: 21.07.2026)
-- שלב 0 (תשתית) הושלם: git, מבנה תיקיות, business DB schema קיים ב-`db/`
+- שלב 0 (תשתית) הושלם במלואו: git, מבנה תיקיות, business DB schema קיים ב-`db/`, ו-DB בפועל ב-Supabase נוצר ואומת — כל 4 הטבלאות (`clients`, `projects`, `invoices`, `deployments`) קיימות ונראות ב-Table Editor, RLS מופעל
 - שלב 1 (סוכן בניית אתרים) בתהליך: `sites/_template/index.html` קיים, אתר לקוח ראשון לדוגמה `sites/lak-ve-varak/index.html` נבנה בהצלחה כולל תמיכת RTL ועברית (פונט Heebo)
 - טרם עברנו לשלב 2 (פריסה וסליקה) — עדיין משפרים ובודקים את סוכן בניית האתרים
 - לפרטים מלאים ראה `docs/project-plan.md`
