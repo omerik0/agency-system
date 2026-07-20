@@ -2,6 +2,12 @@
 
 הצב קובץ זה בשורש תיקיית הפרויקט על ה-Mac mini. Claude Code טוען אותו אוטומטית כקונטקסט בכל סשן.
 
+## מצב נוכחי (עדכון אחרון: 21.07.2026)
+- שלב 0 (תשתית) הושלם: git, מבנה תיקיות, business DB schema קיים ב-`db/`
+- שלב 1 (סוכן בניית אתרים) בתהליך: `sites/_template/index.html` קיים, אתר לקוח ראשון לדוגמה `sites/lak-ve-varak/index.html` נבנה בהצלחה כולל תמיכת RTL ועברית (פונט Heebo)
+- טרם עברנו לשלב 2 (פריסה וסליקה) — עדיין משפרים ובודקים את סוכן בניית האתרים
+- לפרטים מלאים ראה `docs/project-plan.md`
+
 ## על הפרויקט
 מערכת סוכנים לבניית אתרים ללקוחות: מבריף פרויקט ועד אתר פרוס עם סליקה. הפרויקט משמש גם עסקית וגם ללימוד עומק של עבודה עם סוכני AI.
 
@@ -35,3 +41,8 @@ infra/           # קונפיגורציית פריסה, סקריפטים
 ## מה לא לבנות כרגע
 - סוכן איתור לידים / Meta Graph API — יטופל בנפרד, בהמשך
 - Remote Control מהאייפון — לא נדרש בשלב זה
+
+## Git workflow
+- After finishing any working piece of code, automatically create a git commit with a clear English commit message — do not wait to be asked.
+- This does not apply to changes that touch money/billing/checkout — those still require explicit user approval before any action, per the code conventions above, and should not be auto-committed without that approval.
+- Never force-push, amend published commits, or run other destructive git operations without explicit request, regardless of this auto-commit instruction.
