@@ -17,7 +17,7 @@
 - Claude Code הותקן בהצלחה (Node.js + Homebrew + `npm install -g @anthropic-ai/claude-code`), מחובר עם Claude Pro subscription
 - [x] `sites/_template/index.html` נוצר — שלד גנרי (Hero, About, Services, Gallery, Testimonials, Contact, Footer) עם Tailwind CDN, placeholders בלבד (כמו שתוכנן)
 - [x] אתר לקוח ראשון לדוגמה נוצר בהצלחה מהתבנית ("לק וברק", מספרת ציפורניים) ונפתח בדפדפן לבדיקה
-- [ ] עדיין לא נוסה עם בריף עשיר יותר (תוכן אמיתי, צבעי מותג, תמונות) כדי לראות התאמה אמיתית ולא רק שלד
+- [x] נוסה עם בריף עשיר יותר (תוכן אמיתי, צבעי מותג ספציפיים) — `sites/pinat-uri/index.html` (פינת אורי, בית קפה בוטיק), כולל custom Tailwind colors (טרקוטה #C4622D, קרם #F5EDE1, אספרסו #3B2A1F) ותוכן מלא בכל סקציה (Hero/About/Services/Gallery/Testimonials/Contact)
 - [ ] פוליש עתידי: מעברים/אנימציות — לא דחוף כרגע, זה שיפור על גבי השלד הקיים
 - הערה: ב-Claude Code יש session limit נפרד משל claude.ai הרגיל (מתאפס בערך כל 5 שעות) — הסשן נגמר תוך כדי עבודה, זה תקין וצפוי
 
