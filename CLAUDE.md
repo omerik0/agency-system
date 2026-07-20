@@ -52,3 +52,8 @@ infra/           # קונפיגורציית פריסה, סקריפטים
 - After finishing any working piece of code, automatically create a git commit with a clear English commit message — do not wait to be asked.
 - This does not apply to changes that touch money/billing/checkout — those still require explicit user approval before any action, per the code conventions above, and should not be auto-committed without that approval.
 - Never force-push, amend published commits, or run other destructive git operations without explicit request, regardless of this auto-commit instruction.
+
+### Commit numbering
+- Every commit message must be prefixed with the current stage and task number from the "מצב נוכחי" section, e.g. `[Stage 1, Task 5] Add pastries section to pinat-uri site`.
+- The task number is a simple sequential counter per stage (Task 1, 2, 3...), incremented in the order work is actually done — there is no separate formal numbered TODO list to match against.
+- General/meta commits that aren't tied to a specific stage's deliverables (e.g. editing this file's workflow conventions) may omit the prefix.
