@@ -4,9 +4,8 @@
 
 ## מצב נוכחי (עדכון אחרון: 21.07.2026)
 - שלב 0 (תשתית) הושלם במלואו: git, מבנה תיקיות, business DB schema קיים ב-`db/`, ו-DB בפועל ב-Supabase נוצר ואומת — כל 4 הטבלאות (`clients`, `projects`, `invoices`, `deployments`) קיימות ונראות ב-Table Editor, RLS מופעל
-- שלב 1 (סוכן בניית אתרים) בתהליך: `sites/_template/index.html` קיים, אתר לקוח ראשון לדוגמה `sites/lak-ve-varak/index.html` נבנה בהצלחה כולל תמיכת RTL ועברית (פונט Heebo)
-- שלב 1, משימה: בדיקת בריף עשיר (תוכן אמיתי, צבעי מותג ספציפיים) — הושלמה בהצלחה עם `sites/pinat-uri/index.html` (בית קפה בוטיק), כולל התאמת צבעי מותג מותאמים אישית (טרקוטה/קרם/אספרסו) ותוכן ספציפי בכל סקציה
-- טרם עברנו לשלב 2 (פריסה וסליקה) — עדיין משפרים ובודקים את סוכן בניית האתרים
+- שלב 1 (סוכן בניית אתרים) **הושלם ואומת על ידי עומר** — tag `stage1-verified`. תבנית בסיס (`sites/_template/index.html`) ושני אתרי לקוח לדוגמה נבנו בהצלחה: `sites/lak-ve-varak/index.html` (מספרת ציפורניים, RTL/עברית, פונט Heebo) ו-`sites/pinat-uri/index.html` (בית קפה בוטיק, בריף עשיר עם תוכן וצבעי מותג ספציפיים). תמונות אמיתיות ופוליש (מעברים/אנימציות) לאתרי הלקוחות נשארים שיפורים עתידיים ואינם חוסמים את השלמת השלב.
+- עוברים לשלב 2 (פריסה וסליקה)
 - לפרטים מלאים ראה `docs/project-plan.md`
 
 ## על הפרויקט
@@ -58,3 +57,7 @@ infra/           # קונפיגורציית פריסה, סקריפטים
 - Every commit message must be prefixed with the current stage and task number from the "מצב נוכחי" section, e.g. `[Stage 1, Task 5] Add pastries section to pinat-uri site`.
 - The task number is a simple sequential counter per stage (Task 1, 2, 3...), incremented in the order work is actually done — there is no separate formal numbered TODO list to match against.
 - The prefix is required by default. The only exemption is trivial commits with zero connection to any project task (e.g. a typo fix). Docs updates, cleanup, and structural changes tied to current work are NOT exempt — they get numbered like any other commit.
+
+### Stage-end tagging
+- At the end of each completed stage, once Omer (the manager) explicitly confirms it's done, create a git tag named `stageN-verified` on the current commit.
+- Images/polish for client sites (real client photos, transitions/animations, etc.) are tracked as future enhancements — they do not block marking a stage complete or creating its verification tag.

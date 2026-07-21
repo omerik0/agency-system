@@ -13,12 +13,13 @@
 - [x] `website-builder.md` (subagent) → הועבר ל-`.claude/agents/`
 - [x] **DB בפועל נפתח ב-Supabase** — הפרויקט נוצר, `db/business-schema.sql` הורץ ב-SQL Editor, אומת שכל 4 הטבלאות (`clients`, `projects`, `invoices`, `deployments`) קיימות ונראות ב-Table Editor, RLS מופעל
 
-**שלב 1 — סוכן בניית אתרים: בתהליך, עובד בהצלחה**
+**שלב 1 — סוכן בניית אתרים: הושלם ואומת ✅ (tag: `stage1-verified`)**
 - Claude Code הותקן בהצלחה (Node.js + Homebrew + `npm install -g @anthropic-ai/claude-code`), מחובר עם Claude Pro subscription
 - [x] `sites/_template/index.html` נוצר — שלד גנרי (Hero, About, Services, Gallery, Testimonials, Contact, Footer) עם Tailwind CDN, placeholders בלבד (כמו שתוכנן)
 - [x] אתר לקוח ראשון לדוגמה נוצר בהצלחה מהתבנית ("לק וברק", מספרת ציפורניים) ונפתח בדפדפן לבדיקה
 - [x] נוסה עם בריף עשיר יותר (תוכן אמיתי, צבעי מותג ספציפיים) — `sites/pinat-uri/index.html` (פינת אורי, בית קפה בוטיק), כולל custom Tailwind colors (טרקוטה #C4622D, קרם #F5EDE1, אספרסו #3B2A1F) ותוכן מלא בכל סקציה (Hero/About/Services/Gallery/Testimonials/Contact)
-- [ ] פוליש עתידי: מעברים/אנימציות — לא דחוף כרגע, זה שיפור על גבי השלד הקיים
+- [x] אושר על ידי עומר (המנהל) שהשלב הושלם — 21.07.2026
+- שיפורים עתידיים (לא חוסמים את השלמת השלב): תמונות אמיתיות מהלקוחות בגלריות, פוליש (מעברים/אנימציות)
 - הערה: ב-Claude Code יש session limit נפרד משל claude.ai הרגיל (מתאפס בערך כל 5 שעות) — הסשן נגמר תוך כדי עבודה, זה תקין וצפוי
 
 **שלב 2, 3 — לא התחילו**
