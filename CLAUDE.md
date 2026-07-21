@@ -57,4 +57,4 @@ infra/           # קונפיגורציית פריסה, סקריפטים
 ### Commit numbering
 - Every commit message must be prefixed with the current stage and task number from the "מצב נוכחי" section, e.g. `[Stage 1, Task 5] Add pastries section to pinat-uri site`.
 - The task number is a simple sequential counter per stage (Task 1, 2, 3...), incremented in the order work is actually done — there is no separate formal numbered TODO list to match against.
-- General/meta commits that aren't tied to a specific stage's deliverables (e.g. editing this file's workflow conventions) may omit the prefix.
+- The prefix is required by default. The only exemption is trivial commits with zero connection to any project task (e.g. a typo fix). Docs updates, cleanup, and structural changes tied to current work are NOT exempt — they get numbered like any other commit.
