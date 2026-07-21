@@ -2,11 +2,11 @@
 
 הצב קובץ זה בשורש תיקיית הפרויקט על ה-Mac mini. Claude Code טוען אותו אוטומטית כקונטקסט בכל סשן.
 
-## מצב נוכחי (עדכון אחרון: 21.07.2026)
-- שלב 0 (תשתית) הושלם במלואו: git, מבנה תיקיות, business DB schema קיים ב-`db/`, ו-DB בפועל ב-Supabase נוצר ואומת — כל 4 הטבלאות (`clients`, `projects`, `invoices`, `deployments`) קיימות ונראות ב-Table Editor, RLS מופעל
-- שלב 1 (סוכן בניית אתרים) **הושלם ואומת על ידי עומר** — tag `stage1-verified`. תבנית בסיס (`sites/_template/index.html`) ושני אתרי לקוח לדוגמה נבנו בהצלחה: `sites/lak-ve-varak/index.html` (מספרת ציפורניים, RTL/עברית, פונט Heebo) ו-`sites/pinat-uri/index.html` (בית קפה בוטיק, בריף עשיר עם תוכן וצבעי מותג ספציפיים). תמונות אמיתיות ופוליש (מעברים/אנימציות) לאתרי הלקוחות נשארים שיפורים עתידיים ואינם חוסמים את השלמת השלב.
-- עוברים לשלב 2 (פריסה וסליקה)
-- לפרטים מלאים ראה `docs/project-plan.md`
+## מצב נוכחי (עדכון אחרון: 21.07.2026 03:15)
+- שלב 0 (תשתית): הושלם ✅
+- שלב 1 (סוכן בניית אתרים): הושלם ואומת ✅ — tag `stage1-verified`
+- שלב 2 (פריסה וסליקה): הבא בתור, טרם התחיל
+- לפרטים והיסטוריה מלאה ראה `docs/project-plan.md`
 
 ## על הפרויקט
 מערכת סוכנים לבניית אתרים ללקוחות: מבריף פרויקט ועד אתר פרוס עם סליקה. הפרויקט משמש גם עסקית וגם ללימוד עומק של עבודה עם סוכני AI.
@@ -47,6 +47,8 @@ infra/           # קונפיגורציית פריסה, סקריפטים
   - Mark the completed task as done.
   - Add one line stating the current stage number and task name (e.g. "Stage 1, Task: rich brief testing — in progress").
 - Do this automatically, without being asked, as part of finishing the task — before or together with the git commit.
+- Refresh the "עדכון אחרון" timestamp at the top of the section to the current date AND time (not just date) every time the section is updated.
+- Keep "מצב נוכחי" lean, not additive: when marking something done or updating progress, remove or condense outdated/completed notes instead of appending new lines on top of old ones. Keep only what's still relevant to understanding the current state. Move historical detail worth preserving to a separate changelog section (`docs/project-plan.md` has one), not the main status view.
 
 ## Git workflow
 - After finishing any working piece of code, automatically create a git commit with a clear English commit message — do not wait to be asked.

@@ -1,32 +1,32 @@
 # תוכנית פרויקט: מערכת סוכני AI לבניית אתרים ללקוחות
 
-## מצב נוכחי (עדכון אחרון: 21.07.2026)
+## מצב נוכחי (עדכון אחרון: 21.07.2026 03:15)
 
-**שלב 0 — תשתית: הושלם במלואו**
-- [x] תיקיית פרויקט: `~/Desktop/Projects/agency-system`
-- [x] `git init` בוצע. **החלטה: כל commit messages באנגלית**, שיחה עצמה בעברית
-- [x] מבנה תיקיות נוצר: `sites/_template/ db/ infra/ .claude/agents/ docs/` (תיקיית `agents/` בשורש נוצרה בטעות בתכנון המוקדם ונשארה ריקה — נמחקה; ההגדרות בפועל תמיד היו ב-`.claude/agents/`)
-- [x] `CLAUDE.md` בשורש הפרויקט
-- [x] `.gitignore` בשורש (תוקן ידנית מ-`gitignore` ל-`.gitignore` — הורדה מהצ'אט הפילה את הנקודה)
-- [x] `.DS_Store` הוסר ממעקב git (`git rm --cached`) אחרי שנכנס בטעות לפני שה-gitignore היה במקום
-- [x] `business-schema.sql` → הועבר ל-`db/`
-- [x] `website-builder.md` (subagent) → הועבר ל-`.claude/agents/`
-- [x] **DB בפועל נפתח ב-Supabase** — הפרויקט נוצר, `db/business-schema.sql` הורץ ב-SQL Editor, אומת שכל 4 הטבלאות (`clients`, `projects`, `invoices`, `deployments`) קיימות ונראות ב-Table Editor, RLS מופעל
+- **שלב 0 — תשתית:** הושלם ✅ (כולל DB בפועל ב-Supabase, 4 טבלאות מאומתות, RLS מופעל)
+- **שלב 1 — סוכן בניית אתרים:** הושלם ואומת ✅ — tag `stage1-verified`. תבנית בסיס + 2 אתרי לקוח (לק וברק, פינת אורי). שיפורים עתידיים שלא חוסמים: תמונות אמיתיות מהלקוחות, פוליש (מעברים/אנימציות)
+- **שלב 2 — סוכן פריסה וסליקה:** הבא בתור, טרם התחיל
+- **שלב 3 — אורקסטרטור:** לא התחיל
+- **שלב 4 — סוכן לידים:** נדחה במכוון, יטופל בסוף
 
-**שלב 1 — סוכן בניית אתרים: הושלם ואומת ✅ (tag: `stage1-verified`)**
-- Claude Code הותקן בהצלחה (Node.js + Homebrew + `npm install -g @anthropic-ai/claude-code`), מחובר עם Claude Pro subscription
-- [x] `sites/_template/index.html` נוצר — שלד גנרי (Hero, About, Services, Gallery, Testimonials, Contact, Footer) עם Tailwind CDN, placeholders בלבד (כמו שתוכנן)
-- [x] אתר לקוח ראשון לדוגמה נוצר בהצלחה מהתבנית ("לק וברק", מספרת ציפורניים) ונפתח בדפדפן לבדיקה
-- [x] נוסה עם בריף עשיר יותר (תוכן אמיתי, צבעי מותג ספציפיים) — `sites/pinat-uri/index.html` (פינת אורי, בית קפה בוטיק), כולל custom Tailwind colors (טרקוטה #C4622D, קרם #F5EDE1, אספרסו #3B2A1F) ותוכן מלא בכל סקציה (Hero/About/Services/Gallery/Testimonials/Contact)
-- [x] אושר על ידי עומר (המנהל) שהשלב הושלם — 21.07.2026
-- שיפורים עתידיים (לא חוסמים את השלמת השלב): תמונות אמיתיות מהלקוחות בגלריות, פוליש (מעברים/אנימציות)
+## Changelog (פירוט היסטורי)
+פירוט מה נעשה בפועל בכל שלב, לצורך רקע — לא נדרש לקריאה כדי להבין את המצב הנוכחי.
+
+**שלב 0 — תשתית**
+- תיקיית פרויקט: `~/Desktop/Projects/agency-system`, `git init`. החלטה: כל commit messages באנגלית, שיחה עצמה בעברית
+- מבנה תיקיות: `sites/_template/ db/ infra/ .claude/agents/ docs/` (תיקיית `agents/` בשורש נוצרה בטעות בתכנון המוקדם ונשארה ריקה — נמחקה מאוחר יותר; ההגדרות בפועל תמיד היו ב-`.claude/agents/`)
+- `.gitignore` בשורש (תוקן ידנית מ-`gitignore` ל-`.gitignore` — הורדה מהצ'אט הפילה את הנקודה); `.DS_Store` הוסר ממעקב git
+- `business-schema.sql` → `db/`; `website-builder.md` (subagent) → `.claude/agents/`
+- DB בפועל נפתח ב-Supabase: הפרויקט נוצר, `db/business-schema.sql` הורץ ב-SQL Editor, אומת שכל 4 הטבלאות קיימות ב-Table Editor, RLS מופעל
+
+**שלב 1 — סוכן בניית אתרים**
+- Claude Code הותקן (Node.js + Homebrew + `npm install -g @anthropic-ai/claude-code`), מחובר עם Claude Pro subscription
+- `sites/_template/index.html` — שלד גנרי (Hero, About, Services, Gallery, Testimonials, Contact, Footer) עם Tailwind CDN
+- אתר לקוח ראשון: "לק וברק" (מספרת ציפורניים) — נבנה מהתבנית ונבדק בדפדפן
+- בדיקת בריף עשיר יותר: "פינת אורי" (בית קפה בוטיק) — תוכן אמיתי וצבעי מותג מותאמים אישית (טרקוטה #C4622D, קרם #F5EDE1, אספרסו #3B2A1F) בכל סקציה
+- אושר על ידי עומר (המנהל) שהשלב הושלם — 21.07.2026, tag `stage1-verified`
 - הערה: ב-Claude Code יש session limit נפרד משל claude.ai הרגיל (מתאפס בערך כל 5 שעות) — הסשן נגמר תוך כדי עבודה, זה תקין וצפוי
 
-**שלב 2, 3 — לא התחילו**
-
-**שלב 4 (סוכן לידים) — נדחה במכוון, יטופל בסוף**
-
-## הערות טכניות שנצברו בדרך
+**הערות טכניות שנצברו בדרך**
 - קובץ שיורד מהצ'אט לפעמים מאבד נקודה מתחילת השם (`.gitignore` → `gitignore`) — תמיד לבדוק עם `ls -a` אחרי הורדה
 - תיקיות ריקות לא נכנסות לגיט — רק כשיש קובץ בפנים
 
