@@ -16,7 +16,7 @@
 
 ## מבנה תיקיות
 ```
-agents/          # הגדרות subagents (roles, prompts, tools)
+.claude/agents/  # הגדרות subagents (roles, prompts, tools)
 sites/           # קוד האתרים שנוצרים ללקוחות, תיקייה לכל לקוח
 db/              # סכמות SQL, מיגרציות
 infra/           # קונפיגורציית פריסה, סקריפטים

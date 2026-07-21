@@ -5,7 +5,7 @@
 **שלב 0 — תשתית: הושלם במלואו**
 - [x] תיקיית פרויקט: `~/Desktop/Projects/agency-system`
 - [x] `git init` בוצע. **החלטה: כל commit messages באנגלית**, שיחה עצמה בעברית
-- [x] מבנה תיקיות נוצר: `agents/ sites/_template/ db/ infra/ .claude/agents/ docs/`
+- [x] מבנה תיקיות נוצר: `sites/_template/ db/ infra/ .claude/agents/ docs/` (תיקיית `agents/` בשורש נוצרה בטעות בתכנון המוקדם ונשארה ריקה — נמחקה; ההגדרות בפועל תמיד היו ב-`.claude/agents/`)
 - [x] `CLAUDE.md` בשורש הפרויקט
 - [x] `.gitignore` בשורש (תוקן ידנית מ-`gitignore` ל-`.gitignore` — הורדה מהצ'אט הפילה את הנקודה)
 - [x] `.DS_Store` הוסר ממעקב git (`git rm --cached`) אחרי שנכנס בטעות לפני שה-gitignore היה במקום
@@ -36,7 +36,7 @@
 ## סדר עבודה (סוכן הלידים נדחה לשלב מאוחר יותר)
 
 ### שלב 0 — תשתית
-- תיקיית פרויקט אחת ב-VS Code על ה-Mac mini: `agents/`, `sites/`, `db/`, `infra/`
+- תיקיית פרויקט אחת ב-VS Code על ה-Mac mini: `sites/`, `db/`, `infra/`, ו-`.claude/agents/` להגדרות subagents
 - Claude Code כבר מותקן ורץ (טרמינל). תוסף VS Code הוא אופציונלי — נותן diff view נוח בתוך העורך, לא כלי נפרד.
 - DB ראשי (business DB) — Supabase או Neon (Postgres מנוהל, טיר חינמי בהתחלה)
 
