@@ -40,6 +40,7 @@ infra/           # קונפיגורציית פריסה, סקריפטים
 - כל פעולה שמשנה כסף/סליקה דורשת אישור מפורש מהמשתמש לפני ביצוע, לא רק לפני תכנון
 - אין לגרד (scrape) אינסטגרם או פלטפורמות אחרות בניגוד לתנאי השימוש שלהן
 - הגדרות סוכנים (`.claude/agents/*.md`) נכתבות בעברית בכל הפרוזה (description, system prompt, טקסט חופשי). שדות YAML טכניים (`name`, `tools`, `model`) ומזהים בפועל (שמות קבצים, טבלאות DB) נשארים באנגלית ולא מתורגמים
+- כשסוכן צריך לאסוף מידע מהמשתמש בצורה מובנית/מוגבלת (למשל שאלות סגורות בלבד, לא טקסט חופשי) — יש להעדיף כלי שאוכף את זה טכנית (כגון `AskUserQuestion`) על פני הסתמכות על כלל בטקסט בלבד, בכל מקום שרלוונטי
 
 ## מה לא לבנות כרגע
 - סוכן איתור לידים / Meta Graph API — יטופל בנפרד, בהמשך
@@ -62,6 +63,7 @@ infra/           # קונפיגורציית פריסה, סקריפטים
 - Every commit message must be prefixed with the current stage and task number from the "מצב נוכחי" section, e.g. `[Stage 1, Task 5] Add pastries section to pinat-uri site`.
 - The task number is a simple sequential counter per stage (Task 1, 2, 3...), incremented in the order work is actually done — there is no separate formal numbered TODO list to match against.
 - The prefix is required by default. The only exemption is trivial commits with zero connection to any project task (e.g. a typo fix). Docs updates, cleanup, and structural changes tied to current work are NOT exempt — they get numbered like any other commit.
+- For work that belongs to an unnumbered "שלב ביניים" (interim stage, see מצב נוכחי) rather than to any numbered stage — use the tag `[שלב ביניים]` instead of `[Stage N, Task M]`. Do not force this kind of work into a numbered stage just to fit the usual format.
 
 ### Stage-end tagging
 - At the end of each completed stage, once Omer (the manager) explicitly confirms it's done, create a git tag named `stageN-verified` on the current commit.
