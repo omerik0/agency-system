@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<!--
+  BASE ECOMMERCE TEMPLATE
+  ========================
+  Shared starting point for client sites that sell products (cart-based shopping,
+  not a single fixed product or a booking calendar — see _template-booking for that).
+  Do NOT delete or heavily specialize this file — copy it into a new client folder
+  and adapt content/colors/fonts/products there instead. Keep this template generic.
+
+  This is a STATIC UI SHELL ONLY: product grid, cart icon/badge, and "Add to cart" /
+  "Checkout" buttons are placeholders with no real logic. Actual payment integration
+  (Stripe/Tranzila) is out of scope here — that is wired in later by the billing agent,
+  same as every other template.
+
+  Structure: Nav -> Hero -> Product Grid -> About -> Testimonials -> Newsletter -> Contact -> Footer
+  Stack: Plain HTML + Tailwind CSS via CDN (no build step).
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop Name | Tagline</title>
+
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Optional: customize Tailwind theme colors here per client -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              light: "#f5f5f4",
+              DEFAULT: "#4f46e5",
+              dark: "#312e81",
+            },
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-white text-gray-800 antialiased">
+
+  <!-- ============ NAV ============ -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
+    <nav class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+      <a href="#hero" class="text-xl font-bold text-brand">Shop Name</a>
+      <ul class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <li><a href="#products" class="hover:text-brand">Shop</a></li>
+        <li><a href="#about" class="hover:text-brand">About</a></li>
+        <li><a href="#testimonials" class="hover:text-brand">Reviews</a></li>
+        <li><a href="#contact" class="hover:text-brand">Contact</a></li>
+      </ul>
+      <!-- Cart icon: UI placeholder only, no real cart logic -->
+      <button type="button" class="relative inline-flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 text-sm font-semibold text-gray-700 hover:border-brand hover:text-brand transition">
+        🛒 Cart
+        <span class="absolute -top-2 -right-2 bg-brand text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section id="hero" class="bg-brand-light">
+    <div class="max-w-6xl mx-auto px-6 py-24 md:py-32 text-center">
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-gray-900">
+        Shop Name
+      </h1>
+      <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+        A short, compelling tagline that explains what this shop sells and why customers should buy here.
+      </p>
+      <div class="mt-8 flex justify-center gap-4">
+        <a href="#products" class="bg-brand text-white font-semibold px-8 py-3 rounded-full hover:bg-brand-dark transition">
+          Shop Now
+        </a>
+        <a href="#about" class="border border-gray-300 text-gray-700 font-semibold px-8 py-3 rounded-full hover:border-brand hover:text-brand transition">
+          Our Story
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRODUCT GRID ============ -->
+  <section id="products" class="max-w-6xl mx-auto px-6 py-20">
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-4">Featured Products</h2>
+    <p class="text-center text-gray-500 mb-12 text-sm">Product photos, names, and prices are placeholders — replace with real catalog content.</p>
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- Repeat this card block per product -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="aspect-square bg-gray-100 flex items-center justify-center text-gray-400">Product Image</div>
+        <div class="p-5">
+          <h3 class="font-semibold text-lg mb-1">Product One</h3>
+          <p class="text-gray-500 text-sm mb-3">Short product description goes here.</p>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-gray-900">$00.00</span>
+            <button type="button" class="bg-brand text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-brand-dark transition">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="aspect-square bg-gray-100 flex items-center justify-center text-gray-400">Product Image</div>
+        <div class="p-5">
+          <h3 class="font-semibold text-lg mb-1">Product Two</h3>
+          <p class="text-gray-500 text-sm mb-3">Short product description goes here.</p>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-gray-900">$00.00</span>
+            <button type="button" class="bg-brand text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-brand-dark transition">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="aspect-square bg-gray-100 flex items-center justify-center text-gray-400">Product Image</div>
+        <div class="p-5">
+          <h3 class="font-semibold text-lg mb-1">Product Three</h3>
+          <p class="text-gray-500 text-sm mb-3">Short product description goes here.</p>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-gray-900">$00.00</span>
+            <button type="button" class="bg-brand text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-brand-dark transition">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="bg-gray-50 py-20">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">About Us</h2>
+        <p class="text-gray-600 leading-relaxed">
+          Placeholder paragraph describing the shop, its story, mission, and what makes its products
+          different. Replace with real content provided by the client.
+        </p>
+      </div>
+      <div class="aspect-video bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-400">
+        Image / Illustration Placeholder
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section id="testimonials" class="max-w-6xl mx-auto px-6 py-20">
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">What Our Customers Say</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <blockquote class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <p class="text-gray-600 italic">"Placeholder testimonial quote number one."</p>
+        <footer class="mt-4 font-semibold text-gray-900">— Customer Name</footer>
+      </blockquote>
+      <blockquote class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <p class="text-gray-600 italic">"Placeholder testimonial quote number two."</p>
+        <footer class="mt-4 font-semibold text-gray-900">— Customer Name</footer>
+      </blockquote>
+      <blockquote class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <p class="text-gray-600 italic">"Placeholder testimonial quote number three."</p>
+        <footer class="mt-4 font-semibold text-gray-900">— Customer Name</footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ============ NEWSLETTER ============ -->
+  <section class="bg-brand-light py-16">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">Join Our Newsletter</h2>
+      <p class="text-gray-600 mb-6">Get notified about new products and special offers.</p>
+      <form class="flex flex-col sm:flex-row gap-3 justify-center">
+        <input type="email" placeholder="Your Email" class="flex-1 border border-gray-300 rounded-full px-5 py-3 focus:outline-none focus:ring-2 focus:ring-brand" />
+        <button type="submit" class="bg-brand text-white font-semibold px-8 py-3 rounded-full hover:bg-brand-dark transition">
+          Subscribe
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="max-w-6xl mx-auto px-6 py-20">
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Contact Us</h2>
+    <div class="grid md:grid-cols-2 gap-12">
+      <div class="space-y-4 text-gray-600">
+        <p><span class="font-semibold text-gray-900">Address:</span> 123 Example Street, City</p>
+        <p><span class="font-semibold text-gray-900">Phone:</span> (000) 000-0000</p>
+        <p><span class="font-semibold text-gray-900">Hours:</span> Mon–Fri, 9:00–18:00</p>
+        <p><span class="font-semibold text-gray-900">Social:</span> Instagram · Facebook</p>
+      </div>
+      <form class="space-y-4">
+        <input type="text" placeholder="Your Name" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand" />
+        <input type="email" placeholder="Your Email" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand" />
+        <textarea rows="4" placeholder="Your Message" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand"></textarea>
+        <button type="submit" class="w-full bg-brand text-white font-semibold px-8 py-3 rounded-full hover:bg-brand-dark transition">
+          Send Message
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-gray-900 text-gray-300 py-10">
+    <div class="max-w-6xl mx-auto px-6 text-center text-sm">
+      <p>&copy; <span id="year"></span> Shop Name. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
