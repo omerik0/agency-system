@@ -2,18 +2,16 @@
 
 הצב קובץ זה בשורש תיקיית הפרויקט על ה-Mac mini. Claude Code טוען אותו אוטומטית כקונטקסט בכל סשן.
 
-## מצב נוכחי (עדכון אחרון: 21.07.2026 18:27)
+## מצב נוכחי (עדכון אחרון: 22.07.2026 10:00)
 - שלב 0 (תשתית): הושלם ✅
 - שלב 1 (סוכן בניית אתרים): הושלם ואומת ✅ — tag `stage1-verified`
 - שלב 2 (פריסה וסליקה): הושלם ואומת ✅ — tag `stage2-verified`. 5 משימות: סוכני פריסה+סליקה, פריסת test case, ובדיקת קצה-לקצה מלאה (אתר→פריסה→סליקה) על "לק וברק"
-- שלב ביניים (לא ממוספר, בין שלב 2 לשלב 3): מגדירים היקף מורחב לפני שנכנסים רשמית לשלב 3 — סוכן קליטת לקוחות חדש + תמיכת multi-template ב-website-builder. פרטים ב-`docs/project-plan.md`
-- שלב 3 (אורקסטרטור): לא התחיל בפועל עדיין — ימתין עד שהשלב-ביניים יושלם
+- שלב 3 (קליטת לקוחות + הרחבת website-builder): בתהליך — `client-onboarding.md` נוצר, בתיקון (חסר שלב אישור+יצירת DB); תמיכת multi-template ב-website-builder טרם התחילה. (שלב זה החל בתור "שלב ביניים" לא ממוספר, והפך רשמית לשלב 3 — ראו הבהרה ב-`docs/project-plan.md`)
+- שלב 4 (אורקסטרטור): לא התחיל
 - לפרטים והיסטוריה מלאה ראה `docs/project-plan.md`
 
 ## על הפרויקט
 מערכת סוכנים לבניית אתרים ללקוחות: מבריף פרויקט ועד אתר פרוס עם סליקה. הפרויקט משמש גם עסקית וגם ללימוד עומק של עבודה עם סוכני AI.
-
-**שלב נוכחי: סוכן איתור הלידים מושהה — אין לבנות אותו כרגע. מתמקדים בסוכן בניית אתרים, סוכן פריסה/סליקה, והאורקסטרטור.**
 
 ## מבנה תיקיות
 ```
@@ -30,10 +28,11 @@ infra/           # קונפיגורציית פריסה, סקריפטים
 אל תוסיף טבלאות עסקיות של לקוח (מוצרים, הזמנות) ל-DB הראשי, ואל תוסיף נתוני חיוב/פרויקט של המשתמש ל-DB של לקוח.
 
 ## סדר בנייה
-1. סוכן בניית אתרים — מקבל בריף, מייצר דף נחיתה סטטי (HTML/Tailwind) מ-template בסיס ב-`sites/_template/`
-2. סוכן פריסה — Vercel/Netlify לסטטי, Docker/VPS לאתרים עם backend; מעדכן `deployments` ב-DB הראשי
-3. סוכן סליקה — מחבר את חשבון Stripe/Tranzila **של הלקוח** (מפתחות API שהלקוח מספק, לא של המשתמש)
-4. אורקסטרטור — subagent שמתאם: פרויקט חדש → בניית אתר → אישור משתמש → פריסה → סליקה → עדכון סטטוס ב-`projects`
+1. סוכן קליטת לקוחות — מראיין את המשתמש (לא את הלקוח) בשאלות מובנות, קובע template/דרישות DB/דרישות סליקה, ולאחר אישור — פותח DB חדש בסופאבייס ללקוח אם נדרש
+2. סוכן בניית אתרים — מקבל בריף, מייצר דף נחיתה סטטי (HTML/Tailwind) מ-template בסיס ב-`sites/_template/`
+3. סוכן פריסה — Vercel/Netlify לסטטי, Docker/VPS לאתרים עם backend; מעדכן `deployments` ב-DB הראשי
+4. סוכן סליקה — מחבר את חשבון Stripe/Tranzila **של הלקוח** (מפתחות API שהלקוח מספק, לא של המשתמש)
+5. אורקסטרטור — subagent שמתאם: פרויקט חדש → קליטה → בניית אתר → אישור משתמש → פריסה → סליקה → עדכון סטטוס ב-`projects`
 
 ## מוסכמות קוד
 - Templates לא נכתבים מאפס בכל פרויקט — משפרים template משותף
@@ -43,7 +42,6 @@ infra/           # קונפיגורציית פריסה, סקריפטים
 - כשסוכן צריך לאסוף מידע מהמשתמש בצורה מובנית/מוגבלת (למשל שאלות סגורות בלבד, לא טקסט חופשי) — יש להעדיף כלי שאוכף את זה טכנית (כגון `AskUserQuestion`) על פני הסתמכות על כלל בטקסט בלבד, בכל מקום שרלוונטי
 
 ## מה לא לבנות כרגע
-- סוכן איתור לידים / Meta Graph API — יטופל בנפרד, בהמשך
 - Remote Control מהאייפון — לא נדרש בשלב זה
 
 ## Progress tracking
@@ -63,7 +61,6 @@ infra/           # קונפיגורציית פריסה, סקריפטים
 - Every commit message must be prefixed with the current stage and task number from the "מצב נוכחי" section, e.g. `[Stage 1, Task 5] Add pastries section to pinat-uri site`.
 - The task number is a simple sequential counter per stage (Task 1, 2, 3...), incremented in the order work is actually done — there is no separate formal numbered TODO list to match against.
 - The prefix is required by default. The only exemption is trivial commits with zero connection to any project task (e.g. a typo fix). Docs updates, cleanup, and structural changes tied to current work are NOT exempt — they get numbered like any other commit.
-- For work that belongs to an unnumbered "שלב ביניים" (interim stage, see מצב נוכחי) rather than to any numbered stage — use the tag `[שלב ביניים]` instead of `[Stage N, Task M]`. Do not force this kind of work into a numbered stage just to fit the usual format.
 
 ### Stage-end tagging
 - At the end of each completed stage, once Omer (the manager) explicitly confirms it's done, create a git tag named `stageN-verified` on the current commit.
