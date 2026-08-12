@@ -39,6 +39,7 @@ infra/           # קונפיגורציית פריסה, סקריפטים
 - אין לגרד (scrape) אינסטגרם או פלטפורמות אחרות בניגוד לתנאי השימוש שלהן
 - הגדרות סוכנים (`.claude/agents/*.md`) נכתבות בעברית בכל הפרוזה (description, system prompt, טקסט חופשי). שדות YAML טכניים (`name`, `tools`, `model`) ומזהים בפועל (שמות קבצים, טבלאות DB) נשארים באנגלית ולא מתורגמים
 - כשסוכן צריך לאסוף מידע מהמשתמש בצורה מובנית/מוגבלת (למשל שאלות סגורות בלבד, לא טקסט חופשי) — יש להעדיף כלי שאוכף את זה טכנית (כגון `AskUserQuestion`) על פני הסתמכות על כלל בטקסט בלבד, בכל מקום שרלוונטי
+- **אין לכתוב סודות (סיסמאות, מפתחות API, טוקנים) לשום קובץ זמני, סקראצ'פאד או לוג — בשום שלב, גם לא לרגע ובכוונה למחוק אחר כך.** ערך רגיש שנדרש לפעולה אחת מועבר ישירות בפקודה או במשתנה סביבה של אותה פקודה בלבד. היעד הקבוע היחיד לסודות הוא קובץ `.env` המתאים, שנמצא ב-`.gitignore`
 
 ## מגבלת פלטפורמה: subagent לא יכול לשאול את המשתמש
 הכלי AskUserQuestion מוסר מכל subagent על ידי Claude Code, גם אם הוא רשום במפורש בשדה tools שלו. לכן כל סוכן שתפקידו לראיין את המשתמש — ובראשם client-onboarding — חייב לרוץ בסשן הראשי, ולא להישלח כ-subagent.
@@ -64,6 +65,8 @@ infra/           # קונפיגורציית פריסה, סקריפטים
 - Every commit message must be prefixed with the current stage and task number from the "מצב נוכחי" section, e.g. `[Stage 1, Task 5] Add pastries section to pinat-uri site`.
 - The task number is a simple sequential counter per stage (Task 1, 2, 3...), incremented in the order work is actually done — there is no separate formal numbered TODO list to match against.
 - The prefix is required by default. The only exemption is trivial commits with zero connection to any project task (e.g. a typo fix). Docs updates, cleanup, and structural changes tied to current work are NOT exempt — they get numbered like any other commit.
+- **עבודה על אתר של לקוח (בתיקיית `sites/<client-name>/`, לא כולל `sites/_template-*/`) לא מקבלת מספר שלב/משימה** — היא עבודה שוטפת (operational work), לא משימת פיתוח של המערכת עצמה. הפרפיקס שלה הוא `[Client: <client-slug>]`, למשל `[Client: guy-stauber]`. מספור Stage/Task שמור אך ורק לעבודה על המערכת עצמה (סוכנים, תבניות, תשתית, תיעוד).
+  - הכלל נקבע לפי **מה שהקומיט משנה בפועל**, לא לפי מה שהניע אותו: קומיט שמשנה רק קבצים תחת `sites/<client-name>/` (כולל ה-DB הייעודי שלו) מקבל `[Client: ...]`. קומיט שמשנה `.claude/agents/*.md`, `CLAUDE.md`, `docs/project-plan.md`, templates, infra וכד' מקבל `[Stage N, Task M]` — **גם אם** הוא נכתב כתוצאה מעבודה על לקוח ספציפי (למשל תיקון מוסכמה שהתגלה תוך כדי onboarding של לקוח). קומיט שמערבב את שני הסוגים יפוצל לשני קומיטים נפרדים.
 
 ### Stage-end tagging
 - At the end of each completed stage, once Omer (the manager) explicitly confirms it's done, create a git tag named `stageN-verified` on the current commit.
