@@ -62,11 +62,11 @@ infra/           # קונפיגורציית פריסה, סקריפטים
 - Never force-push, amend published commits, or run other destructive git operations without explicit request, regardless of this auto-commit instruction.
 
 ### Commit numbering
-- Every commit message must be prefixed with the current stage and task number from the "מצב נוכחי" section, e.g. `[Stage 1, Task 5] Add pastries section to pinat-uri site`.
-- The task number is a simple sequential counter per stage (Task 1, 2, 3...), incremented in the order work is actually done — there is no separate formal numbered TODO list to match against.
-- The prefix is required by default. The only exemption is trivial commits with zero connection to any project task (e.g. a typo fix). Docs updates, cleanup, and structural changes tied to current work are NOT exempt — they get numbered like any other commit.
-- **עבודה על אתר של לקוח (בתיקיית `sites/<client-name>/`, לא כולל `sites/_template-*/`) לא מקבלת שום פרפיקס** — לא מספר שלב/משימה, וגם לא `[Client: ...]`. הודעת ה-commit היא פשוט תיאור רגיל באנגלית, בדיוק כמו כל commit רגיל ללא המוסכמה הזו. היא עבודה שוטפת (operational work), לא משימת פיתוח של המערכת עצמה, והמעקב אחרי לקוחות נעשה במסד הנתונים הראשי (`clients`/`projects`/`deployments`) — לא בהודעות ה-commit. מספור Stage/Task שמור אך ורק לעבודה על המערכת עצמה (סוכנים, תבניות, DB, תשתית, תיעוד).
-  - הכלל נקבע לפי **מה שהקומיט משנה בפועל**, לא לפי מה שהניע אותו: קומיט שמשנה רק קבצים תחת `sites/<client-name>/` (כולל ה-DB הייעודי שלו) יוצא ללא פרפיקס. קומיט שמשנה `.claude/agents/*.md`, `CLAUDE.md`, `docs/project-plan.md`, templates, infra וכד' מקבל `[Stage N, Task M]` — **גם אם** הוא נכתב כתוצאה מעבודה על לקוח ספציפי (למשל תיקון מוסכמה שהתגלה תוך כדי onboarding של לקוח). קומיט שמערבב את שני הסוגים יפוצל לשני קומיטים נפרדים.
+- פרפיקס `[Stage N, Task M]` שמור **אך ורק לאבני דרך אמיתיות בשלבי הפרויקט**: בניית סוכן, בניית template, הקמת תשתית, סגירת שלב. לא כל שמירה. דוגמה: `[Stage 1, Task 5] Add pastries section to pinat-uri site`.
+- מספר המשימה הוא מונה רץ פשוט לכל שלב (Task 1, 2, 3...), מתקדם לפי סדר הביצוע בפועל — אין רשימת TODO ממוספרת נפרדת שצריך להתאים אליה.
+- **תיקוני ניסוח, הבהרות תיעודיות, עדכוני מוסכמות, ותחזוקה קטנה — הודעת commit רגילה באנגלית, בלי שום פרפיקס.** (הכלל הקודם, שחייב פרפיקס גם על עדכוני תיעוד/ניקיון, מבוטל.)
+- **עבודה על אתר של לקוח (בתיקיית `sites/<client-name>/`, לא כולל `sites/_template-*/`) גם היא ללא שום פרפיקס** — לא מספר שלב/משימה, וגם לא `[Client: ...]`. היא עבודה שוטפת (operational work), לא אבן דרך בפיתוח המערכת עצמה, והמעקב אחרי לקוחות נעשה במסד הנתונים הראשי (`clients`/`projects`/`deployments`) — לא בהודעות ה-commit.
+  - הכלל נקבע לפי **מה שהקומיט משנה בפועל**, לא לפי מה שהניע אותו: קומיט שמשנה רק קבצים תחת `sites/<client-name>/` (כולל ה-DB הייעודי שלו) יוצא ללא פרפיקס. קומיט שמייצג אבן דרך אמיתית בעבודה על המערכת עצמה (`.claude/agents/*.md` חדש/משמעותי, template חדש, תשתית, סגירת שלב) מקבל `[Stage N, Task M]` — **גם אם** הוא נכתב כתוצאה מעבודה על לקוח ספציפי. כל שאר עדכוני התיעוד/המוסכמות/התחזוקה על המערכת — בלי פרפיקס, לפי הכלל שלמעלה. קומיט שמערבב סוגים שונים יפוצל לכמה קומיטים נפרדים.
 
 ### Stage-end tagging
 - At the end of each completed stage, once Omer (the manager) explicitly confirms it's done, create a git tag named `stageN-verified` on the current commit.
