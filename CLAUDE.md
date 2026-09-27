@@ -2,9 +2,9 @@
 
 הצב קובץ זה בשורש תיקיית הפרויקט על ה-Mac mini. Claude Code טוען אותו אוטומטית כקונטקסט בכל סשן.
 
-## מצב נוכחי (עדכון אחרון: 27.09.2026 20:10)
+## מצב נוכחי (עדכון אחרון: 27.09.2026 20:15)
 שלבים 0–2 הושלמו ואומתו (tags `stage1-verified`, `stage2-verified`). שלב 3 (קליטת לקוחות + הרחבת website-builder) הושלם בפועל — ממתין לאישור סופי של עומר לפני תיוג `stage3-verified`.
-אתרים: רק `lak-ve-varak` (לקוח דמו משלבים 1–2) ו-`afik-gozland` (לקוח בדיקה), לצד `sites/_template-*`. guy-stauber‏, demo-shop-e2e‏, billing-demo הוסרו (דיסק, DB ראשי, Vercel‏, Supabase‏; מוצרי ה-Stripe test שלהם בארכיון). **ממתין ל"מאשר מחיקה"**: `sites/pinat-uri/` (דיסק+git) והסרת שלושת הקודמים מ-git.
+אתרים: רק `lak-ve-varak` (לקוח דמו משלבים 1–2) ו-`afik-gozland` (לקוח בדיקה), לצד `sites/_template-*`. guy-stauber‏, pinat-uri‏, demo-shop-e2e‏, billing-demo הוסרו לגמרי (דיסק, git‏, DB ראשי, Vercel‏, Supabase‏); מוצרי ה-Stripe test שלהם בארכיון — מחיקה מלאה לא אפשרית ב-API‏.
 לקוח בדיקה (ריצת זרימה מלאה, יימחק בהמשך): אפיק גוזלנד (`afik-gozland`, חנות + DB + Stripe cart) — רשום ב-`clients`/`projects` (project_id `932aaaab-e700-47a0-970e-ed986a3402b8`), פרויקט Supabase ‏`aykdajxqkxlflqruhebv` נוצר, 5 טבלאות עם RLS‏ (סכמה ב-`sites/afik-gozland/db/schema.sql`). חיבור אומת (`sb_secret_`, ‏200 על כל הטבלאות). אתר סטטי (placeholders מסומנים) live ב-https://afik-gozland.vercel.app, רשום ב-`deployments`. סליקה: Payment Link משולב במצב בדיקה (`plink_1UKKHgJJHpv78gtFfFOOP5md`, ‏₪513) — על חשבון ה-sandbox המשותף `acct_1TvecQJJHpv78gtF` כחריגה זמנית באישור עומר; `#checkout-test` נפרס (`dpl_CWC9bMSnC3pdKV5bh826ERFhauda`). הזרימה הושלמה עד סוף; `projects.status` נשאר `in_progress` בכוונה.
 לרקע מלא (ארכיטקטורה, מטרות, שיפורים עתידיים) ראה `docs/project-plan.md`‏.
 
