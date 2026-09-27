@@ -1,0 +1,4 @@
+# Never publish DB schemas, secrets, or repo metadata
+db/
+.env*
+.gitignore

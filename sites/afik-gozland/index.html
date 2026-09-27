@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<!--
+  אתר לקוח: אפיק גוזלנד (Afik Gozland) — דליקטסן / חנות מזון מקוונת
+  מבוסס על sites/_template-ecommerce/index.html, מותאם עבור:
+    - תוכן בעברית, RTL מלא (lang="he" dir="rtl")
+    - פונט Heebo (Google Fonts) התומך היטב בעברית
+    - פלטת brand כהה ואלגנטית: שחור/גרפיט עם נגיעות זהב ושמנת (ראו tailwind.config)
+    - כרטיסי מוצר וסינון קטגוריות בנויים עם data-attributes (data-category, data-price וכו')
+      כדי שיהיה קל לחבר אותם בעתיד לטבלאות products/categories ב-DB (ראו שדות ב-db/schema.sql)
+
+  זהו UI סטטי בלבד: עגלת קניות, כפתורי "הוסף לסל" וטופס ה-checkout הם placeholder ללא לוגיקה
+  אמיתית. אין חיבור ל-Supabase ואין קוד סליקה — אלו יחוברו מאוחר יותר על ידי סוכני
+  deployment ו-billing בהתאמה.
+
+  כל תוכן עסקי אמיתי (מוצרים, מחירים, פרטי קשר, המלצות) הוא placeholder מפורש –
+  מסומן בהערת HTML <!-- PLACEHOLDER --> לצד כל פריט. ראו את הדיווח הסופי לרשימה מלאה.
+-->
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>אפיק גוזלנד | דליקטסן פרימיום</title>
+
+  <!-- Google Fonts: Heebo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Brand theme: שחור/גרפיט אלגנטי + זהב + שמנת -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heebo: ["Heebo", "sans-serif"],
+          },
+          colors: {
+            brand: {
+              cream: "#f3ede3",   // שמנת בהיר לרקעים חלופיים
+              light: "#1c1c1c",   // גרפיט כהה לרקעי סקשן כהים
+              DEFAULT: "#c9a24b", // זהב — צבע האקשן/מיתוג המרכזי
+              dark: "#a3812f",    // זהב כהה יותר למצבי hover
+              ink: "#0e0e0e",     // כמעט שחור, לטקסט ולרקע ראשי
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    body { font-family: "Heebo", sans-serif; }
+  </style>
+</head>
+<body class="bg-white text-brand-ink antialiased">
+
+  <!-- ============ NAV ============ -->
+  <header class="sticky top-0 z-50 bg-brand-ink/95 backdrop-blur border-b border-white/10">
+    <nav class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+      <a href="#hero" class="text-2xl font-extrabold tracking-wide text-brand">אפיק גוזלנד</a>
+      <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-brand-cream">
+        <li><a href="#products" class="hover:text-brand transition">חנות</a></li>
+        <li><a href="#about" class="hover:text-brand transition">אודות</a></li>
+        <li><a href="#testimonials" class="hover:text-brand transition">המלצות</a></li>
+        <li><a href="#contact" class="hover:text-brand transition">צור קשר</a></li>
+      </ul>
+      <!-- אייקון עגלה: UI בלבד, ללא לוגיקת עגלה אמיתית -->
+      <button type="button" class="relative inline-flex items-center gap-2 border border-brand/40 rounded-full px-4 py-2 text-sm font-semibold text-brand-cream hover:border-brand hover:text-brand transition">
+        עגלה 🛒
+        <span class="absolute -top-2 -left-2 bg-brand text-brand-ink text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section id="hero" class="bg-brand-ink">
+    <div class="max-w-6xl mx-auto px-6 py-24 md:py-32 text-center">
+      <p class="text-brand text-sm font-semibold tracking-[0.3em] uppercase mb-4">Fine Delicatessen</p>
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">
+        אפיק גוזלנד
+      </h1>
+      <!-- PLACEHOLDER: טאגליין שיווקי סופי -->
+      <p class="mt-4 text-lg md:text-xl text-brand-cream/80 max-w-2xl mx-auto">
+        מעדני דליקטסן נבחרים, באיכות פרימיום — טעמים עדינים ומרקמים עשירים, ישירות לשולחן שלכם.
+      </p>
+      <div class="mt-8 flex justify-center gap-4">
+        <a href="#products" class="bg-brand text-brand-ink font-semibold px-8 py-3 rounded-full hover:bg-brand-dark transition">
+          לצפייה במוצרים
+        </a>
+        <a href="#about" class="border border-brand/50 text-brand-cream font-semibold px-8 py-3 rounded-full hover:border-brand hover:text-brand transition">
+          הסיפור שלנו
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRODUCT GRID ============ -->
+  <section id="products" class="max-w-6xl mx-auto px-6 py-20">
+    <h2 class="text-3xl font-bold text-brand-ink text-center mb-4">המוצרים שלנו</h2>
+    <p class="text-center text-gray-500 mb-8 text-sm"><!-- PLACEHOLDER -->תמונות, שמות, תיאורים ומחירים הם לדוגמה בלבד — יוחלפו בקטלוג האמיתי של הלקוח.</p>
+
+    <!-- סינון קטגוריות: כפתורי UI בלבד כרגע, ממופים ל-slug של קטגוריה לצורך חיבור עתידי ל-DB -->
+    <div class="flex flex-wrap justify-center gap-3 mb-12" role="tablist" aria-label="סינון קטגוריות">
+      <button type="button" data-category-filter="all" class="px-5 py-2 rounded-full text-sm font-semibold bg-brand-ink text-white">הכל</button>
+      <button type="button" data-category-filter="cheeses" class="px-5 py-2 rounded-full text-sm font-semibold border border-gray-200 text-gray-600 hover:border-brand hover:text-brand-ink transition">גבינות</button>
+      <button type="button" data-category-filter="cured-meats" class="px-5 py-2 rounded-full text-sm font-semibold border border-gray-200 text-gray-600 hover:border-brand hover:text-brand-ink transition">נקניקים ומעושנים</button>
+      <button type="button" data-category-filter="spreads" class="px-5 py-2 rounded-full text-sm font-semibold border border-gray-200 text-gray-600 hover:border-brand hover:text-brand-ink transition">ממרחים ורטבים</button>
+      <button type="button" data-category-filter="gift-boxes" class="px-5 py-2 rounded-full text-sm font-semibold border border-gray-200 text-gray-600 hover:border-brand hover:text-brand-ink transition">מארזי מתנה</button>
+    </div>
+
+    <!--
+      גריד מוצרים: כל כרטיס נושא data-category (== slug בטבלת categories) ו-data-price (מספרי,
+      ללא סימן ₪) כדי לפשט מיפוי עתידי לשדות name/description/price/image_url/stock/active/category_id.
+    -->
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6" id="product-grid">
+
+      <!-- PLACEHOLDER: מוצר לדוגמה 1 -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden" data-category="cheeses">
+        <div class="aspect-square bg-gray-100 flex items-center justify-center text-gray-400 text-sm"><!-- PLACEHOLDER -->תמונת מוצר</div>
+        <div class="p-5">
+          <h3 class="font-semibold text-lg mb-1"><!-- PLACEHOLDER -->גבינת עיזים מיושנת</h3>
+          <p class="text-gray-500 text-sm mb-3"><!-- PLACEHOLDER -->גבינת עיזים חצי קשה, מיושנת 6 חודשים, בציפוי אפר עשבי תיבול.</p>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-brand-ink" data-price="59">₪59.00<!-- PLACEHOLDER: מחיר לדוגמה --></span>
+            <button type="button" class="bg-brand-ink text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-brand transition">הוסף לסל</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: מוצר לדוגמה 2 -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden" data-category="cured-meats">
+        <div class="aspect-square bg-gray-100 flex items-center justify-center text-gray-400 text-sm"><!-- PLACEHOLDER -->תמונת מוצר</div>
+        <div class="p-5">
+          <h3 class="font-semibold text-lg mb-1"><!-- PLACEHOLDER -->פרושוטו איטלקי פרוס דק</h3>
+          <p class="text-gray-500 text-sm mb-3"><!-- PLACEHOLDER -->ירך חזיר מיובשת באוויר, 18 חודשי הבשלה, פרוסה ידנית.</p>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-brand-ink" data-price="89">₪89.00<!-- PLACEHOLDER: מחיר לדוגמה --></span>
+            <button type="button" class="bg-brand-ink text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-brand transition">הוסף לסל</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: מוצר לדוגמה 3 -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden" data-category="spreads">
+        <div class="aspect-square bg-gray-100 flex items-center justify-center text-gray-400 text-sm"><!-- PLACEHOLDER -->תמונת מוצר</div>
+        <div class="p-5">
+          <h3 class="font-semibold text-lg mb-1"><!-- PLACEHOLDER -->ממרח זיתים וטפנד</h3>
+          <p class="text-gray-500 text-sm mb-3"><!-- PLACEHOLDER -->זיתי קלמטה, שמן זית כתית מעולה ותבלינים ים-תיכוניים.</p>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-brand-ink" data-price="39">₪39.00<!-- PLACEHOLDER: מחיר לדוגמה --></span>
+            <button type="button" class="bg-brand-ink text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-brand transition">הוסף לסל</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: מוצר לדוגמה 4 -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden" data-category="cheeses">
+        <div class="aspect-square bg-gray-100 flex items-center justify-center text-gray-400 text-sm"><!-- PLACEHOLDER -->תמונת מוצר</div>
+        <div class="p-5">
+          <h3 class="font-semibold text-lg mb-1"><!-- PLACEHOLDER -->גבינת רוקפור כחולה</h3>
+          <p class="text-gray-500 text-sm mb-3"><!-- PLACEHOLDER -->גבינת עובש כחול צרפתית, טעם עז ומרקם קרמי.</p>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-brand-ink" data-price="72">₪72.00<!-- PLACEHOLDER: מחיר לדוגמה --></span>
+            <button type="button" class="bg-brand-ink text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-brand transition">הוסף לסל</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: מוצר לדוגמה 5 -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden" data-category="cured-meats">
+        <div class="aspect-square bg-gray-100 flex items-center justify-center text-gray-400 text-sm"><!-- PLACEHOLDER -->תמונת מוצר</div>
+        <div class="p-5">
+          <h3 class="font-semibold text-lg mb-1"><!-- PLACEHOLDER -->נקניק סלמי מעושן</h3>
+          <p class="text-gray-500 text-sm mb-3"><!-- PLACEHOLDER -->נקניק בקר מעושן על עצי אלון, מתובל בפלפל שחור גס.</p>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-brand-ink" data-price="65">₪65.00<!-- PLACEHOLDER: מחיר לדוגמה --></span>
+            <button type="button" class="bg-brand-ink text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-brand transition">הוסף לסל</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER: מוצר לדוגמה 6 -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden" data-category="gift-boxes">
+        <div class="aspect-square bg-gray-100 flex items-center justify-center text-gray-400 text-sm"><!-- PLACEHOLDER -->תמונת מוצר</div>
+        <div class="p-5">
+          <h3 class="font-semibold text-lg mb-1"><!-- PLACEHOLDER -->מארז דליקטסן זוגי</h3>
+          <p class="text-gray-500 text-sm mb-3"><!-- PLACEHOLDER -->מבחר גבינות, נקניקים וממרחים באריזת מתנה מהודרת.</p>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-brand-ink" data-price="189">₪189.00<!-- PLACEHOLDER: מחיר לדוגמה --></span>
+            <button type="button" class="bg-brand-ink text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-brand transition">הוסף לסל</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ CHECKOUT (TEST) ============
+       Fixed sample "cart" — one of each product — via a single combined Stripe Payment Link,
+       since a fully dynamic cart needs a backend to build the checkout at purchase time, out of
+       scope for this static site. Stripe TEST MODE only, no real charges possible.
+       Temporary: uses the shared "agency-system sandbox" account (acct_1TvecQJJHpv78gtF),
+       approved by Omer as a testing-only exception — to be replaced by the client's own account.
+       Prices are placeholders; products/link must be recreated once real prices exist.
+       Safe to remove: delete this <section id="checkout-test"> block. -->
+  <section id="checkout-test" class="bg-brand-ink py-20">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="border-2 border-dashed border-brand/60 rounded-2xl p-8 text-center">
+        <p class="inline-block text-xs font-medium bg-brand/15 text-brand rounded-full px-3 py-1 mb-4">
+          תוספת בדיקה — Stripe Test Mode בלבד, אין חיוב אמיתי. עגלה קבועה לדוגמה (מוצר אחד מכל סוג) — עגלה דינמית אמיתית דורשת backend, מחוץ להיקף אתר סטטי זה.
+        </p>
+        <h2 class="text-2xl font-bold text-brand-cream mb-2">מעבר לתשלום (עגלת דוגמה)</h2>
+        <p class="text-brand-cream/70 mb-6">כולל: גבינת עיזים מיושנת + פרושוטו איטלקי פרוס דק + ממרח זיתים וטפנד + גבינת רוקפור כחולה + נקניק סלמי מעושן + מארז דליקטסן זוגי</p>
+        <div class="text-3xl font-bold text-brand mb-6">₪513.00</div>
+        <a
+          href="https://buy.stripe.com/test_bJe8wQ8Mn19u1a5cnB8so03"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block bg-brand text-brand-ink hover:bg-brand-dark font-semibold px-8 py-3 rounded-full transition"
+        >
+          מעבר לתשלום (בדיקה)
+        </a>
+        <p class="text-xs text-brand-cream/50 mt-6">לבדיקה: מספר כרטיס 4242 4242 4242 4242, כל תאריך תפוגה עתידי, כל CVC.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="bg-brand-cream py-20">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-3xl font-bold text-brand-ink mb-4">אודותינו</h2>
+        <!-- PLACEHOLDER: טקסט אודות אמיתי מהלקוח -->
+        <p class="text-gray-700 leading-relaxed">
+          פסקת placeholder המתארת את סיפור העסק, הערכים שמאחוריו ומה שהופך את המוצרים שלו
+          למיוחדים — טקסט זה יוחלף בתוכן אמיתי שיסופק על ידי הלקוח.
+        </p>
+      </div>
+      <div class="aspect-video bg-white border border-gray-200 rounded-2xl flex items-center justify-center text-gray-400 text-sm">
+        <!-- PLACEHOLDER -->תמונה / איור להחלפה
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section id="testimonials" class="max-w-6xl mx-auto px-6 py-20">
+    <h2 class="text-3xl font-bold text-brand-ink text-center mb-12">מה הלקוחות אומרים</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- PLACEHOLDER: המלצה 1 -->
+      <blockquote class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <p class="text-gray-600 italic">"ציטוט המלצה לדוגמה מספר אחת."</p>
+        <footer class="mt-4 font-semibold text-brand-ink">— שם לקוח לדוגמה</footer>
+      </blockquote>
+      <!-- PLACEHOLDER: המלצה 2 -->
+      <blockquote class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <p class="text-gray-600 italic">"ציטוט המלצה לדוגמה מספר שתיים."</p>
+        <footer class="mt-4 font-semibold text-brand-ink">— שם לקוח לדוגמה</footer>
+      </blockquote>
+      <!-- PLACEHOLDER: המלצה 3 -->
+      <blockquote class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <p class="text-gray-600 italic">"ציטוט המלצה לדוגמה מספר שלוש."</p>
+        <footer class="mt-4 font-semibold text-brand-ink">— שם לקוח לדוגמה</footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ============ NEWSLETTER ============ -->
+  <section class="bg-brand-ink py-16">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+      <h2 class="text-2xl font-bold text-white mb-2">הצטרפו לניוזלטר</h2>
+      <p class="text-brand-cream/80 mb-6">קבלו עדכונים על מוצרים חדשים ומבצעים מיוחדים.</p>
+      <form class="flex flex-col sm:flex-row gap-3 justify-center">
+        <input type="email" placeholder="האימייל שלך" class="flex-1 border border-white/20 bg-white/5 text-white placeholder:text-brand-cream/50 rounded-full px-5 py-3 focus:outline-none focus:ring-2 focus:ring-brand" />
+        <button type="submit" class="bg-brand text-brand-ink font-semibold px-8 py-3 rounded-full hover:bg-brand-dark transition">
+          הרשמה
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="max-w-6xl mx-auto px-6 py-20">
+    <h2 class="text-3xl font-bold text-brand-ink text-center mb-12">צרו קשר</h2>
+    <div class="grid md:grid-cols-2 gap-12">
+      <div class="space-y-4 text-gray-700">
+        <!-- PLACEHOLDER: כל פרטי הקשר להלן הם דוגמה בלבד -->
+        <p><span class="font-semibold text-brand-ink">כתובת:</span> רחוב הדוגמה 00, העיר <!-- PLACEHOLDER --></p>
+        <p><span class="font-semibold text-brand-ink">טלפון:</span> 000-0000000 <!-- PLACEHOLDER --></p>
+        <p><span class="font-semibold text-brand-ink">אימייל:</span> info@example-placeholder.co.il <!-- PLACEHOLDER --></p>
+        <p><span class="font-semibold text-brand-ink">שעות פעילות:</span> א'–ה', 09:00–18:00 <!-- PLACEHOLDER --></p>
+        <p><span class="font-semibold text-brand-ink">רשתות חברתיות:</span> אינסטגרם · פייסבוק <!-- PLACEHOLDER: קישורים אמיתיים --></p>
+      </div>
+      <form class="space-y-4">
+        <input type="text" placeholder="שם מלא" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand" />
+        <input type="email" placeholder="אימייל" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand" />
+        <textarea rows="4" placeholder="ההודעה שלך" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand"></textarea>
+        <button type="submit" class="w-full bg-brand-ink text-white font-semibold px-8 py-3 rounded-full hover:bg-brand transition">
+          שליחת הודעה
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-brand-ink text-brand-cream/70 py-10 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-6 text-center text-sm">
+      <p>&copy; <span id="year"></span> אפיק גוזלנד. כל הזכויות שמורות.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // סינון קטגוריות: UI בלבד — מסתיר/מציג כרטיסי מוצר לפי data-category.
+    // כשיחובר DB אמיתי, הלוגיקה הזו תוחלף בשליפת מוצרים מסוננת מהשרת.
+    const filterButtons = document.querySelectorAll("[data-category-filter]");
+    const productCards = document.querySelectorAll("#product-grid > [data-category]");
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const category = btn.getAttribute("data-category-filter");
+
+        filterButtons.forEach((b) => {
+          b.classList.remove("bg-brand-ink", "text-white");
+          b.classList.add("border", "border-gray-200", "text-gray-600");
+        });
+        btn.classList.add("bg-brand-ink", "text-white");
+        btn.classList.remove("border", "border-gray-200", "text-gray-600");
+
+        productCards.forEach((card) => {
+          const show = category === "all" || card.getAttribute("data-category") === category;
+          card.classList.toggle("hidden", !show);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
