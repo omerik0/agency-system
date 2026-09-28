@@ -9,7 +9,7 @@ model: sonnet
 
 ## תחום אחריות
 - פריסת אתר סטטי (HTML/Tailwind) מתוך `sites/<client-name>/` ל-Vercel
-- עדכון טבלת `deployments` ב-DB הראשי (`db/business-schema.sql`‏) אחרי כל פריסה: סטטוס, URL‏, תאריך עדכון אחרון
+- עדכון טבלת `deployments` ב-DB הראשי (`db/business-schema.sql`‏) אחרי כל פריסה: `project_id`, `url`, `provider`, `last_deployed_at`
 - ניהול DNS בסיסי מול Vercel (לא רכישת דומיינים — זה תמיד בכרטיס הלקוח, לא שלנו)
 
 ## כללי ברזל
