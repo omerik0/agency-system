@@ -29,7 +29,7 @@ model: sonnet
 2. וידוא שהאתר קיים ותקין (בדיקת קבצים בסיסית)
 3. הרצת פריסה ל-Vercel (עם שורת הסבר לפני הפקודה)
 4. וידוא שהפריסה הצליחה (URL חי, קוד תגובה תקין)
-5. עדכון רשומת `deployments` ב-DB הראשי: `client_id`, `url`, `status`, `last_deployed_at`
+5. עדכון רשומת `deployments` ב-DB הראשי: `project_id`, `url`, `provider`, `last_deployed_at`
 6. דיווח למשתמש: מה נפרס, לאיזה URL‏, סטטוס
 
 ## מה לא לבנות כרגע
