@@ -16,6 +16,12 @@ flowchart TD
     D -->|approve each money action| E[billing<br/>Stripe Payment Link]
 ```
 
+**Media step.** After the build is approved, the main session asks whether the client has YouTube links for videos; those are embedded privacy-friendly (youtube-nocookie) instead of hosting large video files. Originals stay in Google Drive, outside the repo; only compressed web versions live in the project.
+
+**Later updates.** `/updatesite <client>` adds new media, YouTube links or content to an existing site and stops at the production-deploy approval gate.
+
+**Landing template.** `sites/_template-landing` is a modern Hebrew RTL base: palette in CSS variables, a gallery laid out by image count, a video carousel and optional sections the builder fills only with real content.
+
 ## The four agents
 
 Definitions are in [`.claude/agents/`](.claude/agents/) (written in Hebrew).
@@ -56,10 +62,11 @@ Claude Code subagents · static HTML + Tailwind (CDN) · Supabase (Postgres + RL
 ## Project structure
 
 ```
-.claude/   # agents, /newclient command, skill, permission settings
+.claude/   # agents, /newclient and /updatesite commands, skill, permission settings
 db/        # business DB schema
 docs/      # project plan (Hebrew)
-sites/     # shared templates + one folder per client
+sites/     # shared templates + two demo sites; real client sites are local-only (gitignored)
+tools/     # small validation scripts (youtube_id.py checks YouTube links)
 CLAUDE.md  # project rules for Claude Code (Hebrew)
 ```
 
@@ -67,7 +74,7 @@ CLAUDE.md  # project rules for Claude Code (Hebrew)
 
 You need Claude Code plus Supabase (with an org access token), Vercel and Stripe (test mode) accounts.
 Copy `.env.example` to `.env` and fill it in.
-Open the project in Claude Code and run `/newclient`.
+Open the project in Claude Code and run `/newclient` (or `/updatesite` for an existing client).
 Note: the agent prompts are written in Hebrew.
 
 ## Status and next steps

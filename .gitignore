@@ -5,3 +5,21 @@ node_modules/
 .DS_Store
 dist/
 build/
+
+# Client media: compressed web versions are generated per client, never committed
+# (originals live in Google Drive, outside the repo). Templates may keep sample media.
+sites/*/images/
+sites/*/videos/
+!sites/_template-*/images/
+!sites/_template-*/videos/
+sites/*/.media-manifest.json
+
+# Third-party design skill (installed locally, not redistributed in this repo)
+.claude/skills/ui-ux-pro-max/
+
+# Real client sites live only on this computer and in the
+# private Drive backup
+sites/*/
+!sites/_template-*/
+!sites/lak-ve-varak/
+!sites/afik-gozland/
