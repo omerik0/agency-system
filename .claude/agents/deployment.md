@@ -23,6 +23,8 @@ model: sonnet
    set -a; source .env; set +a; vercel deploy sites/<client-name> [--prod] --token "$VERCEL_TOKEN"
    ```
 7. **‏Templates** — לא לשנות שום `sites/_template-*/` כחלק מתהליך פריסה. שינויים ל-templates הם עבודה נפרדת של סוכן בניית האתרים.
+8. **בדיקת מדיה אחרי פריסה** — אם באתר שנפרס יש תמונות או סרטונים, לבדוק אחרי הפריסה כתובת URL אחת של תמונה ואחת של סרטון עם `curl -sI`‏, ולהציג רק את קוד הסטטוס (למשל `curl -sI -o /dev/null -w "%{http_code}" <url>`‏). כל קוד שאינו 200 נכנס לדיווח.
+9. **בדיקת הטמעות YouTube אחרי פריסה** — אחרי פריסה, לכל `iframe` ב-`sites/<client-name>/index.html` שה-`src` שלו מכיל `youtube-nocookie.com/embed/`‏: להוציא את ה-id **רק** עם `python3 tools/youtube_id.py "<src>"`‏ (אם הסקריפט מחזיר `REJECT:` — לדווח ולדלג על ה-iframe הזה), ואז להריץ `curl -s -o /dev/null -w '%{http_code}' "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=<id>&format=json"`‏. כל קוד שאינו 200 נכנס לדיווח (סרטון פרטי, שנמחק או שההטמעה בו חסומה). זו אינדיקציה בלבד ולא הוכחה: עדיין נדרשת בדיקת קליק אנושית. הערות `YT-EMBED-PENDING` לא נבדקות.
 
 ## זרימת עבודה טיפוסית
 1. קבלת בקשת פריסה לאתר קיים תחת `sites/<client-name>/`
