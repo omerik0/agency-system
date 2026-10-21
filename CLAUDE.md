@@ -7,6 +7,7 @@
 - שלב 3 — קליטת לקוחות (`client-onboarding`‏) והרחבת `website-builder` לכמה templates ✅ `stage3-verified`
 - שלב 4 — פאנל ניהול לבעל החנות: מתוכנן, טרם החל (פירוט ב-`docs/project-plan.md`‏)
 - שלב 5 — הזמנות וצ'קאאוט: מתוכנן, טרם החל (פירוט ב-`docs/project-plan.md`‏)
+- משימות פתוחות: ראו `docs/project-plan.md`‏
 
 בריפו, תחת `sites/`‏: התבניות `_template-*` ושני אתרי בדיקה — `lak-ve-varak` ו-`afik-gozland`‏. אתרי לקוחות אמיתיים נמצאים רק במחשב הזה ובגיבוי הפרטי ב-Drive‏, ולא מוזכרים בשמם במסמכים ציבוריים.
 
