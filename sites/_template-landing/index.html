@@ -1,183 +1,513 @@
 <!DOCTYPE html>
 <!--
-  BASE LANDING PAGE TEMPLATE
-  ==========================
-  This is the shared starting point for all client sites in sites/<client-name>/.
-  Do NOT delete or heavily specialize this file — copy it into a new client folder
-  and adapt content/colors/fonts there instead. Keep this template generic.
+  BASE LANDING PAGE TEMPLATE (Hebrew, RTL)
+  ========================================
+  Shared starting point for every landing site in sites/<client-name>/.
+  Copy it into the client folder and adapt there; keep this file generic.
 
-  Structure: Hero -> About -> Services -> Gallery -> Testimonials -> Contact -> Footer
-  Stack: Plain HTML + Tailwind CSS via CDN (no build step).
+  - Palette, radius and shadow live in the :root CSS variables below — change them in one place.
+  - Every section carries data-section="<name>". Sections marked data-optional are included
+    only when the client supplied real content; otherwise delete the whole <section>.
+  - All visible text here is SAMPLE text, marked "טקסט לדוגמה". Nothing of it may reach a live site.
+  - No images are bundled: gray boxes (.ph) stand in for media.
+  - Stack: plain HTML + Tailwind CDN + plain JS (no libraries, no build step).
 -->
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Business Name | Tagline</title>
+  <!-- Title and description: from known facts only -->
+  <title>שם העסק | טקסט לדוגמה</title>
+  <meta name="description" content="טקסט לדוגמה: משפט אחד שמתאר את העסק מתוך עובדות ידועות." />
 
-  <!-- Tailwind via CDN -->
+  <!-- Hebrew-capable fonts (Heebo covers the Hebrew subset). At most two families. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet" />
+
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Optional: customize Tailwind theme colors here per client -->
   <script>
+    // Tailwind colors map to the CSS variables below, so the palette has one source of truth
     tailwind.config = {
       theme: {
         extend: {
+          fontFamily: { sans: ["Heebo", "system-ui", "sans-serif"] },
           colors: {
-            brand: {
-              light: "#f5f5f4",
-              DEFAULT: "#4f46e5",
-              dark: "#312e81",
-            },
+            bg: "var(--c-bg)",
+            surface: "var(--c-surface)",
+            ink: "var(--c-ink)",
+            muted: "var(--c-muted)",
+            line: "var(--c-line)",
+            primary: "var(--c-primary)",
+            "primary-ink": "var(--c-primary-ink)",
+            accent: "var(--c-accent)",
+            "accent-ink": "var(--c-accent-ink)",
           },
+          borderRadius: { card: "var(--radius)" },
+          boxShadow: { card: "var(--shadow)" },
         },
       },
     };
+    document.documentElement.classList.add("js");
   </script>
-</head>
-<body class="bg-white text-gray-800 antialiased">
 
-  <!-- ============ NAV ============ -->
-  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
-    <nav class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-      <a href="#hero" class="text-xl font-bold text-brand">Business Name</a>
-      <ul class="hidden md:flex items-center gap-8 text-sm font-medium">
-        <li><a href="#about" class="hover:text-brand">About</a></li>
-        <li><a href="#services" class="hover:text-brand">Services</a></li>
-        <li><a href="#gallery" class="hover:text-brand">Gallery</a></li>
-        <li><a href="#testimonials" class="hover:text-brand">Testimonials</a></li>
-        <li><a href="#contact" class="hover:text-brand">Contact</a></li>
-      </ul>
-      <a href="#contact" class="hidden md:inline-block bg-brand text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-brand-dark transition">
-        Get in Touch
+  <style>
+    /* ============ DESIGN TOKENS — the only place colors are defined ============ */
+    :root {
+      --c-bg: #faf8f5;          /* page background */
+      --c-surface: #ffffff;     /* cards */
+      --c-ink: #1c1917;         /* main text */
+      --c-muted: #57534e;       /* secondary text (AA on bg and surface) */
+      --c-line: #e7e5e4;        /* borders */
+      --c-primary: #1e3a5f;     /* brand color: headings band, footer */
+      --c-primary-ink: #ffffff; /* text on primary */
+      --c-accent: #c2410c;      /* actions and links ONLY */
+      --c-accent-ink: #ffffff;  /* text on accent */
+      --radius: 1rem;
+      --shadow: 0 1px 2px rgb(0 0 0 / .05), 0 8px 24px rgb(0 0 0 / .06);
+      --tile-ratio: 4 / 3;      /* one aspect ratio for every gallery tile */
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--c-bg); color: var(--c-ink); }
+    :focus-visible { outline: 3px solid var(--c-accent); outline-offset: 3px; border-radius: 6px; }
+
+    /* Gray stand-in for media in the template */
+    .ph { background: repeating-linear-gradient(45deg, #e7e5e4 0 12px, #efedeb 12px 24px); }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+           min-height: 48px; padding: .75rem 1.5rem; border-radius: 999px; font-weight: 700; transition: transform .15s, filter .15s; }
+    .btn:hover { filter: brightness(1.08); }
+    .btn:active { transform: translateY(1px); }
+    .btn-accent { background: var(--c-accent); color: var(--c-accent-ink); }
+    .btn-ghost { border: 2px solid currentColor; }
+
+    /* Scroll reveal: subtle, only with JS, never under reduced motion */
+    .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+    .js .reveal.is-visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .js .reveal { opacity: 1; transform: none; transition: none; }
+      .btn { transition: none; }
+    }
+
+    /* ============ GALLERY LAYOUTS (picked by image count, see initGallery) ============ */
+    .gallery { display: grid; gap: .75rem; }
+    .gallery .tile { position: relative; overflow: hidden; border-radius: var(--radius); aspect-ratio: var(--tile-ratio); }
+    .gallery .tile img, .gallery .tile .ph { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gallery .tile { transition: box-shadow .2s; }
+    .gallery .tile:hover { box-shadow: var(--shadow); }
+    .gallery[data-layout="1"] { grid-template-columns: 1fr; }
+    .gallery[data-layout="1"] .tile { aspect-ratio: 16 / 9; }
+    .gallery[data-layout="2"], .gallery[data-layout="3"] { grid-template-columns: 1fr; }
+    .gallery[data-layout="4"], .gallery[data-layout="6"] { grid-template-columns: repeat(2, 1fr); }
+    .gallery[data-layout="5"] { grid-template-columns: repeat(2, 1fr); }
+    .gallery[data-layout="5"] .tile:first-child { grid-column: span 2; }
+    @media (min-width: 640px) {
+      .gallery[data-layout="2"] { grid-template-columns: repeat(2, 1fr); }
+      .gallery[data-layout="3"], .gallery[data-layout="6"] { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (min-width: 768px) {
+      .gallery[data-layout="5"] { grid-template-columns: repeat(4, 1fr); }
+      .gallery[data-layout="5"] .tile:first-child { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+    }
+    /* 7+ images, or any count that cannot complete a row: swipeable carousel with dots */
+    .gallery[data-layout="carousel"] { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .gallery[data-layout="carousel"]::-webkit-scrollbar { display: none; }
+    .gallery[data-layout="carousel"] .tile { flex: 0 0 85%; scroll-snap-align: center; }
+    @media (min-width: 768px) { .gallery[data-layout="carousel"] .tile { flex-basis: 45%; } }
+
+    .dots { display: flex; justify-content: center; gap: .5rem; margin-top: 1rem; }
+    .dots button { width: 10px; height: 10px; border-radius: 999px; background: var(--c-line); transition: width .2s; }
+    .dots button[aria-current="true"] { width: 28px; background: var(--c-accent); }
+
+    /* Lightbox */
+    dialog.lightbox { max-width: min(96vw, 1200px); width: 100%; padding: 0; border: 0; background: transparent; }
+    dialog.lightbox::backdrop { background: rgb(0 0 0 / .85); }
+    dialog.lightbox img { max-height: 85vh; width: auto; max-width: 100%; margin: 0 auto; border-radius: var(--radius); }
+    .lb-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; border-radius: 999px;
+              background: rgb(255 255 255 / .9); color: #111; font-size: 1.5rem; display: grid; place-items: center; }
+
+    /* ============ VIDEO CAROUSEL ============ */
+    .vframe { position: relative; margin-inline: auto; overflow: hidden; border-radius: var(--radius); background: #000; aspect-ratio: var(--ratio, 16 / 9); }
+    /* Leave room for the sticky header, the mobile bar and the carousel controls in one screen */
+    .vframe.portrait { height: min(80vh, 720px, calc(100svh - 220px)); max-width: 100%; }
+    .vframe.landscape { width: 100%; }
+    .vframe video, .vframe iframe, .vframe .ph { width: 100%; height: 100%; display: block; border: 0; object-fit: contain; }
+    .vc-arrow { width: 48px; height: 48px; border-radius: 999px; background: var(--c-surface); color: var(--c-ink);
+                box-shadow: var(--shadow); display: grid; place-items: center; font-size: 1.25rem; }
+
+    /* Room for the sticky mobile bar */
+    @media (max-width: 767px) { body { padding-bottom: 76px; } }
+  </style>
+</head>
+<body class="font-sans antialiased">
+
+  <!-- ============ HEADER ============ -->
+  <header data-section="header" class="sticky top-0 z-40 backdrop-blur border-b border-line" style="background-color: color-mix(in srgb, var(--c-bg) 90%, transparent);">
+    <nav class="max-w-6xl mx-auto flex items-center justify-between gap-4 px-5 py-3" aria-label="ניווט ראשי">
+      <a href="#top" class="flex items-center gap-2 text-lg font-extrabold text-ink">
+        <!-- Logo, if supplied: <img src="images/logo/logo-01.webp" alt="שם העסק" width="120" height="40" class="h-10 w-auto"> -->
+        שם העסק
       </a>
+      <ul class="hidden md:flex items-center gap-7 text-sm font-medium text-muted">
+        <li><a href="#services" class="hover:text-ink">שירותים</a></li>
+        <li><a href="#gallery" class="hover:text-ink">עבודות</a></li>
+        <li><a href="#videos" class="hover:text-ink">סרטונים</a></li>
+        <li><a href="#contact" class="hover:text-ink">צור קשר</a></li>
+      </ul>
+      <a href="tel:+972000000000" class="btn btn-accent hidden md:inline-flex text-sm">התקשרו עכשיו</a>
     </nav>
   </header>
 
-  <!-- ============ HERO ============ -->
-  <section id="hero" class="bg-brand-light">
-    <div class="max-w-6xl mx-auto px-6 py-24 md:py-32 text-center">
-      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-gray-900">
-        Business Name
-      </h1>
-      <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-        A short, compelling tagline that explains what this business does and why it matters.
-      </p>
-      <div class="mt-8 flex justify-center gap-4">
-        <a href="#contact" class="bg-brand text-white font-semibold px-8 py-3 rounded-full hover:bg-brand-dark transition">
-          Primary Call to Action
-        </a>
-        <a href="#services" class="border border-gray-300 text-gray-700 font-semibold px-8 py-3 rounded-full hover:border-brand hover:text-brand transition">
-          Learn More
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ ABOUT ============ -->
-  <section id="about" class="max-w-6xl mx-auto px-6 py-20">
-    <div class="grid md:grid-cols-2 gap-12 items-center">
-      <div>
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">About Us</h2>
-        <p class="text-gray-600 leading-relaxed">
-          Placeholder paragraph describing the business, its story, mission, and what makes it
-          different. Replace with real content provided by the client.
-        </p>
-      </div>
-      <div class="aspect-video bg-gray-100 rounded-2xl flex items-center justify-center text-gray-400">
-        Image / Illustration Placeholder
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ SERVICES ============ -->
-  <section id="services" class="bg-gray-50 py-20">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Our Services</h2>
-      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <!-- Repeat this card block per service -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div class="w-12 h-12 rounded-full bg-brand-light flex items-center justify-center mb-4 text-brand font-bold">1</div>
-          <h3 class="font-semibold text-lg mb-2">Service One</h3>
-          <p class="text-gray-600 text-sm">Short description of this service goes here.</p>
-        </div>
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div class="w-12 h-12 rounded-full bg-brand-light flex items-center justify-center mb-4 text-brand font-bold">2</div>
-          <h3 class="font-semibold text-lg mb-2">Service Two</h3>
-          <p class="text-gray-600 text-sm">Short description of this service goes here.</p>
-        </div>
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div class="w-12 h-12 rounded-full bg-brand-light flex items-center justify-center mb-4 text-brand font-bold">3</div>
-          <h3 class="font-semibold text-lg mb-2">Service Three</h3>
-          <p class="text-gray-600 text-sm">Short description of this service goes here.</p>
+  <main id="top">
+    <!-- ============ HERO: one clear first screen, one primary action ============ -->
+    <section data-section="hero" id="hero" class="max-w-6xl mx-auto px-5 pt-10 pb-16 md:pt-16 md:pb-24 grid md:grid-cols-2 gap-10 items-center">
+      <div class="reveal">
+        <p class="text-sm font-bold tracking-wide text-muted mb-3">טקסט לדוגמה: תחום העסק</p>
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-[1.1] text-ink">טקסט לדוגמה: כותרת מעובדות ידועות</h1>
+        <p class="mt-5 text-lg text-muted max-w-prose">טקסט לדוגמה: משפט אחד שמסביר מה העסק עושה.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="tel:+972000000000" class="btn btn-accent text-lg px-8">התקשרו עכשיו</a>
+          <a href="https://wa.me/972000000000" class="btn btn-ghost text-ink">וואטסאפ</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ============ GALLERY ============ -->
-  <section id="gallery" class="max-w-6xl mx-auto px-6 py-20">
-    <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Gallery</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <!-- Replace each placeholder div with a real <img> when photos are available -->
-      <div class="aspect-square bg-gray-100 rounded-xl"></div>
-      <div class="aspect-square bg-gray-100 rounded-xl"></div>
-      <div class="aspect-square bg-gray-100 rounded-xl"></div>
-      <div class="aspect-square bg-gray-100 rounded-xl"></div>
-    </div>
-  </section>
-
-  <!-- ============ TESTIMONIALS ============ -->
-  <section id="testimonials" class="bg-gray-50 py-20">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">What Our Clients Say</h2>
-      <div class="grid md:grid-cols-3 gap-6">
-        <blockquote class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <p class="text-gray-600 italic">"Placeholder testimonial quote number one."</p>
-          <footer class="mt-4 font-semibold text-gray-900">— Client Name</footer>
-        </blockquote>
-        <blockquote class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <p class="text-gray-600 italic">"Placeholder testimonial quote number two."</p>
-          <footer class="mt-4 font-semibold text-gray-900">— Client Name</footer>
-        </blockquote>
-        <blockquote class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <p class="text-gray-600 italic">"Placeholder testimonial quote number three."</p>
-          <footer class="mt-4 font-semibold text-gray-900">— Client Name</footer>
-        </blockquote>
+      <div class="reveal rounded-card overflow-hidden shadow-card" style="aspect-ratio: 4 / 5;">
+        <!-- Hero image: <img src="images/hero/hero-01.webp" alt="..." width="1200" height="1500" class="w-full h-full object-cover" fetchpriority="high"> -->
+        <div class="ph w-full h-full" role="img" aria-label="מקום לתמונה"></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ============ CONTACT ============ -->
-  <section id="contact" class="max-w-6xl mx-auto px-6 py-20">
-    <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Contact Us</h2>
-    <div class="grid md:grid-cols-2 gap-12">
-      <div class="space-y-4 text-gray-600">
-        <p><span class="font-semibold text-gray-900">Address:</span> 123 Example Street, City</p>
-        <p><span class="font-semibold text-gray-900">Phone:</span> (000) 000-0000</p>
-        <p><span class="font-semibold text-gray-900">Hours:</span> Mon–Fri, 9:00–18:00</p>
-        <p><span class="font-semibold text-gray-900">Social:</span> Instagram · Facebook</p>
+    <!-- ============ SERVICES ============ -->
+    <section data-section="services" id="services" class="bg-surface border-y border-line">
+      <div class="max-w-6xl mx-auto px-5 py-16 md:py-24">
+        <h2 class="reveal text-3xl md:text-4xl font-extrabold mb-10">השירותים</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- One card per real service -->
+          <article class="reveal rounded-card border border-line bg-bg p-6">
+            <span class="inline-grid place-items-center w-11 h-11 rounded-full bg-primary text-primary-ink font-bold mb-4" aria-hidden="true">1</span>
+            <h3 class="text-lg font-bold mb-2">טקסט לדוגמה: שירות</h3>
+            <p class="text-muted">טקסט לדוגמה: תיאור קצר.</p>
+          </article>
+          <article class="reveal rounded-card border border-line bg-bg p-6">
+            <span class="inline-grid place-items-center w-11 h-11 rounded-full bg-primary text-primary-ink font-bold mb-4" aria-hidden="true">2</span>
+            <h3 class="text-lg font-bold mb-2">טקסט לדוגמה: שירות</h3>
+            <p class="text-muted">טקסט לדוגמה: תיאור קצר.</p>
+          </article>
+          <article class="reveal rounded-card border border-line bg-bg p-6">
+            <span class="inline-grid place-items-center w-11 h-11 rounded-full bg-primary text-primary-ink font-bold mb-4" aria-hidden="true">3</span>
+            <h3 class="text-lg font-bold mb-2">טקסט לדוגמה: שירות</h3>
+            <p class="text-muted">טקסט לדוגמה: תיאור קצר.</p>
+          </article>
+        </div>
       </div>
-      <form class="space-y-4">
-        <input type="text" placeholder="Your Name" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand" />
-        <input type="email" placeholder="Your Email" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand" />
-        <textarea rows="4" placeholder="Your Message" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand"></textarea>
-        <button type="submit" class="w-full bg-brand text-white font-semibold px-8 py-3 rounded-full hover:bg-brand-dark transition">
-          Send Message
-        </button>
-      </form>
-    </div>
-  </section>
+    </section>
+
+    <!-- ============ ABOUT (optional) ============ -->
+    <section data-section="about" data-optional id="about" class="max-w-6xl mx-auto px-5 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
+      <div class="reveal rounded-card overflow-hidden" style="aspect-ratio: 4 / 3;">
+        <!-- <img src="images/about/about-01.webp" alt="..." width="1200" height="900" loading="lazy" class="w-full h-full object-cover"> -->
+        <div class="ph w-full h-full" role="img" aria-label="מקום לתמונה"></div>
+      </div>
+      <div class="reveal">
+        <h2 class="text-3xl md:text-4xl font-extrabold mb-4">אודות</h2>
+        <p class="text-muted text-lg leading-relaxed">טקסט לדוגמה: רק תוכן אמיתי שהלקוח מסר.</p>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY: layout picked by image count ============ -->
+    <section data-section="gallery" id="gallery" class="max-w-6xl mx-auto px-5 py-16 md:py-24">
+      <h2 class="reveal text-3xl md:text-4xl font-extrabold mb-10">עבודות</h2>
+      <!--
+        data-layout="auto" lets initGallery pick: 1 wide | 2 equal | 3 in a row | 4 = 2x2 |
+        5 = large + 2x2 | 6 = 3x2 | 7+ = carousel with dots.
+        Each tile: <button class="tile" data-full="images/gallery/gallery-01.webp" aria-label="הגדלת תמונה 1">
+                     <img src="images/gallery/gallery-01.webp" alt="..." width="1200" height="900" loading="lazy"></button>
+      -->
+      <div class="gallery" data-layout="auto">
+        <button type="button" class="tile" aria-label="הגדלת תמונה 1"><span class="ph"></span></button>
+        <button type="button" class="tile" aria-label="הגדלת תמונה 2"><span class="ph"></span></button>
+        <button type="button" class="tile" aria-label="הגדלת תמונה 3"><span class="ph"></span></button>
+        <button type="button" class="tile" aria-label="הגדלת תמונה 4"><span class="ph"></span></button>
+      </div>
+      <div class="dots" data-gallery-dots hidden></div>
+    </section>
+
+    <!-- ============ BEFORE / AFTER (optional) ============ -->
+    <section data-section="before-after" data-optional id="before-after" class="bg-surface border-y border-line">
+      <div class="max-w-6xl mx-auto px-5 py-16 md:py-24">
+        <h2 class="reveal text-3xl md:text-4xl font-extrabold mb-10">לפני ואחרי</h2>
+        <!-- One pair per real before/after set; both images share one aspect ratio -->
+        <div class="reveal grid grid-cols-2 gap-3 md:gap-5">
+          <figure>
+            <div class="ph rounded-card" style="aspect-ratio: 3 / 4;" role="img" aria-label="מקום לתמונה"></div>
+            <figcaption class="mt-2 text-center font-bold text-muted">לפני</figcaption>
+          </figure>
+          <figure>
+            <div class="ph rounded-card" style="aspect-ratio: 3 / 4;" role="img" aria-label="מקום לתמונה"></div>
+            <figcaption class="mt-2 text-center font-bold text-muted">אחרי</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VIDEOS: carousel, one active slide ============ -->
+    <section data-section="videos" id="videos" class="max-w-6xl mx-auto px-5 py-16 md:py-24">
+      <h2 class="reveal text-3xl md:text-4xl font-extrabold mb-10">סרטונים</h2>
+      <!--
+        Hosted slide (nothing loads until active):
+          <div class="vframe portrait" style="--ratio: 720 / 1280;" data-slide>
+            <video controls playsinline preload="none" width="720" height="1280"
+                   data-src="videos/video-01.mp4" data-poster="images/posters/poster-01.webp"
+                   aria-label="סרטון 1"></video></div>
+        YouTube slide (iframe is created only when active, per the YouTube iframe rules):
+          <div class="vframe landscape" style="--ratio: 16 / 9;" data-slide data-yt-id="<id>" data-title="צפו בסרטון"></div>
+        Pending YouTube items stay as YT-EMBED-PENDING HTML comments, outside the slides.
+        A single slide renders as a plain player: arrows and dots are removed.
+      -->
+      <div class="video-carousel" data-video-carousel role="region" aria-roledescription="קרוסלה" aria-label="סרטונים" tabindex="0">
+        <div class="vframe landscape" style="--ratio: 16 / 9;" data-slide><div class="ph" role="img" aria-label="מקום לסרטון 1"></div></div>
+        <div class="vframe landscape" style="--ratio: 16 / 9;" data-slide><div class="ph" role="img" aria-label="מקום לסרטון 2"></div></div>
+        <div class="mt-5 flex items-center justify-center gap-4" data-controls>
+          <!-- RTL: "previous" sits on the right and points right -->
+          <button type="button" class="vc-arrow" data-prev aria-label="הסרטון הקודם">&#8594;</button>
+          <div class="dots !mt-0" data-dots></div>
+          <button type="button" class="vc-arrow" data-next aria-label="הסרטון הבא">&#8592;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIALS (optional, real quotes only) ============ -->
+    <section data-section="testimonials" data-optional id="testimonials" class="bg-primary text-primary-ink">
+      <div class="max-w-6xl mx-auto px-5 py-16 md:py-24">
+        <h2 class="reveal text-3xl md:text-4xl font-extrabold mb-10">המלצות</h2>
+        <div class="grid md:grid-cols-3 gap-5">
+          <blockquote class="reveal rounded-card p-6" style="background: color-mix(in srgb, var(--c-primary-ink) 10%, transparent);">
+            <p class="text-lg leading-relaxed">טקסט לדוגמה: ציטוט אמיתי בלבד.</p>
+            <footer class="mt-4 font-bold">טקסט לדוגמה: שם הממליץ</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICE AREAS (optional) ============ -->
+    <section data-section="service-areas" data-optional id="service-areas" class="max-w-6xl mx-auto px-5 py-16 md:py-24">
+      <h2 class="reveal text-3xl md:text-4xl font-extrabold mb-8">אזורי שירות</h2>
+      <ul class="reveal flex flex-wrap gap-3">
+        <li class="rounded-full border border-line bg-surface px-5 py-2 font-medium">טקסט לדוגמה: אזור</li>
+        <li class="rounded-full border border-line bg-surface px-5 py-2 font-medium">טקסט לדוגמה: אזור</li>
+      </ul>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section data-section="contact" id="contact" class="max-w-6xl mx-auto px-5 pb-16 md:pb-24">
+      <div class="reveal rounded-card bg-primary text-primary-ink p-8 md:p-14 text-center shadow-card">
+        <h2 class="text-3xl md:text-4xl font-extrabold">צרו קשר</h2>
+        <p class="mt-3 text-lg opacity-90">טקסט לדוגמה: משפט הזמנה קצר.</p>
+        <div class="mt-8 flex flex-col sm:flex-row flex-wrap justify-center gap-3">
+          <a href="tel:+972000000000" class="btn btn-accent text-lg px-8">התקשרו: <span dir="ltr">000-0000000</span></a>
+          <a href="https://wa.me/972000000000" class="btn btn-ghost">וואטסאפ</a>
+          <a href="mailto:sample@example.com" class="btn btn-ghost">אימייל</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <!-- ============ FOOTER ============ -->
-  <footer class="bg-gray-900 text-gray-300 py-10">
-    <div class="max-w-6xl mx-auto px-6 text-center text-sm">
-      <p>&copy; <span id="year"></span> Business Name. All rights reserved.</p>
+  <footer data-section="footer" class="border-t border-line">
+    <div class="max-w-6xl mx-auto px-5 py-8 text-center text-sm text-muted">
+      <p>&copy; <span id="year"></span> שם העסק</p>
     </div>
   </footer>
 
+  <!-- ============ STICKY MOBILE BAR: call + WhatsApp ============ -->
+  <div data-section="mobile-bar" class="md:hidden fixed inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-2 p-3 bg-surface border-t border-line shadow-card">
+    <a href="tel:+972000000000" class="btn btn-accent">התקשרו</a>
+    <a href="https://wa.me/972000000000" class="btn btn-ghost text-ink">וואטסאפ</a>
+  </div>
+
+  <!-- Lightbox: native dialog (Esc closes, arrows navigate, focus returns) -->
+  <dialog class="lightbox" aria-label="תצוגת תמונה">
+    <div class="relative">
+      <img alt="" />
+      <!-- RTL: previous on the right, next on the left -->
+      <button type="button" class="lb-btn right-2" data-lb-prev aria-label="התמונה הקודמת">&#8594;</button>
+      <button type="button" class="lb-btn left-2" data-lb-next aria-label="התמונה הבאה">&#8592;</button>
+      <button type="button" class="lb-btn top-6 left-2" style="transform:none;" data-lb-close aria-label="סגירה">&#10005;</button>
+    </div>
+  </dialog>
+
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // ---- Scroll reveal (skipped under reduced motion) ----
+    (function () {
+      var items = document.querySelectorAll(".reveal");
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce || !("IntersectionObserver" in window)) {
+        items.forEach(function (el) { el.classList.add("is-visible"); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+      items.forEach(function (el) { io.observe(el); });
+    })();
+
+    // ---- Gallery: layout by image count, carousel dots, lightbox ----
+    (function () {
+      var gallery = document.querySelector(".gallery");
+      if (!gallery) return;
+      var tiles = Array.prototype.slice.call(gallery.querySelectorAll(".tile"));
+      var n = tiles.length;
+      if (gallery.dataset.layout === "auto") {
+        gallery.dataset.layout = n >= 1 && n <= 6 ? String(n) : "carousel";
+      }
+
+      if (gallery.dataset.layout === "carousel") {
+        var dotsWrap = document.querySelector("[data-gallery-dots]");
+        dotsWrap.hidden = false;
+        var dots = tiles.map(function (tile, i) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.setAttribute("aria-label", "תמונה " + (i + 1) + " מתוך " + n);
+          b.addEventListener("click", function () {
+            tile.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+          });
+          dotsWrap.appendChild(b);
+          return b;
+        });
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              var i = tiles.indexOf(e.target);
+              dots.forEach(function (d, j) { d.setAttribute("aria-current", j === i ? "true" : "false"); });
+            }
+          });
+        }, { root: gallery, threshold: 0.6 });
+        tiles.forEach(function (t) { io.observe(t); });
+      }
+
+      var dlg = document.querySelector("dialog.lightbox");
+      var img = dlg.querySelector("img");
+      var withImages = tiles.filter(function (t) { return t.querySelector("img"); });
+      var current = 0, opener = null;
+      function show(i) {
+        current = (i + withImages.length) % withImages.length;
+        var src = withImages[current].querySelector("img");
+        img.src = withImages[current].dataset.full || src.src;
+        img.alt = src.alt;
+      }
+      withImages.forEach(function (tile, i) {
+        tile.addEventListener("click", function () {
+          opener = tile;
+          show(i);
+          dlg.showModal();
+        });
+      });
+      dlg.querySelector("[data-lb-prev]").addEventListener("click", function () { show(current - 1); });
+      dlg.querySelector("[data-lb-next]").addEventListener("click", function () { show(current + 1); });
+      dlg.querySelector("[data-lb-close]").addEventListener("click", function () { dlg.close(); });
+      dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener("keydown", function (e) {
+        // RTL: the left arrow moves forward
+        if (e.key === "ArrowLeft") show(current + 1);
+        if (e.key === "ArrowRight") show(current - 1);
+      });
+      dlg.addEventListener("close", function () { if (opener) opener.focus(); });
+    })();
+
+    // ---- Video carousel: one active slide, inactive slides load nothing ----
+    (function () {
+      var root = document.querySelector("[data-video-carousel]");
+      if (!root) return;
+      var slides = Array.prototype.slice.call(root.querySelectorAll("[data-slide]"));
+      var controls = root.querySelector("[data-controls]");
+      if (!slides.length) return;
+      var active = 0;
+
+      function load(slide) {
+        var v = slide.querySelector("video[data-src]");
+        if (v && !v.getAttribute("src")) {
+          if (v.dataset.poster) v.poster = v.dataset.poster;
+          v.src = v.dataset.src;
+        }
+        var id = slide.dataset.ytId;
+        if (id && !slide.querySelector("iframe")) {
+          var f = document.createElement("iframe");
+          f.className = "w-full h-full";
+          f.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id);
+          f.title = slide.dataset.title || "צפו בסרטון";
+          f.loading = "lazy";
+          f.allow = "fullscreen";
+          f.referrerPolicy = "strict-origin-when-cross-origin";
+          f.dataset.ytId = id;
+          slide.appendChild(f);
+        }
+      }
+      function unload(slide) {
+        var v = slide.querySelector("video");
+        if (v) v.pause();
+        var f = slide.querySelector("iframe");
+        if (f) f.remove(); // removing the iframe is the only reliable way to stop YouTube
+      }
+      function go(i) {
+        var next = (i + slides.length) % slides.length;
+        slides.forEach(function (s, j) {
+          if (j !== next) { unload(s); s.hidden = true; }
+        });
+        active = next;
+        slides[active].hidden = false;
+        load(slides[active]);
+        dots.forEach(function (d, j) { d.setAttribute("aria-current", j === active ? "true" : "false"); });
+      }
+
+      var dots = [];
+      if (slides.length === 1) {
+        // A single video is just a player
+        if (controls) controls.remove();
+        go(0);
+        return;
+      }
+      var dotsWrap = root.querySelector("[data-dots]");
+      dots = slides.map(function (s, i) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.setAttribute("aria-label", "סרטון " + (i + 1) + " מתוך " + slides.length);
+        b.addEventListener("click", function () { go(i); });
+        dotsWrap.appendChild(b);
+        return b;
+      });
+      root.querySelector("[data-prev]").addEventListener("click", function () { go(active - 1); });
+      root.querySelector("[data-next]").addEventListener("click", function () { go(active + 1); });
+
+      // Starting any video pauses every other one
+      root.addEventListener("play", function (e) {
+        root.querySelectorAll("video").forEach(function (v) { if (v !== e.target) v.pause(); });
+      }, true);
+
+      // Keyboard (RTL: left = next). Arrow keys on a focused <video> keep their native seek.
+      root.addEventListener("keydown", function (e) {
+        if (e.target.tagName === "VIDEO") return;
+        if (e.key === "ArrowLeft") { e.preventDefault(); go(active + 1); }
+        if (e.key === "ArrowRight") { e.preventDefault(); go(active - 1); }
+      });
+
+      // Touch swipe (RTL: swipe left = next)
+      var x0 = null, y0 = null;
+      root.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+      root.addEventListener("touchend", function (e) {
+        if (x0 === null) return;
+        var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? active + 1 : active - 1);
+        x0 = null;
+      });
+
+      go(0);
+    })();
   </script>
 </body>
 </html>
