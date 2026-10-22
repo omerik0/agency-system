@@ -16,6 +16,7 @@ sites/*/.media-manifest.json
 
 # Third-party design skill (installed locally, not redistributed in this repo)
 .claude/skills/ui-ux-pro-max/
+.claude/skills/frontend-design/
 
 # Real client sites live only on this computer and in the
 # private Drive backup
