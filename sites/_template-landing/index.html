@@ -11,6 +11,19 @@
   - All visible text here is SAMPLE text, marked "טקסט לדוגמה". Nothing of it may reach a live site.
   - No images are bundled: gray boxes (.ph) stand in for media.
   - Stack: plain HTML + Tailwind CDN + plain JS (no libraries, no build step).
+
+  EFFECTS (optional, opt-in per element with a data-fx attribute; enable about 3-4 per site, by business type)
+  - reveal      data-fx="reveal"     fade and slide in on scroll. Never put it on hero content.
+  - parallax    data-fx="parallax"   on the <img> (or media box) inside an overflow-hidden frame.
+                                     data-fx-speed="8" sets the shift in % of height (max 9).
+  - spotlight   data-fx="spotlight"  soft accent glow that follows the mouse, on a section or card with its own background.
+  - magnetic    data-fx="magnetic"   the main call-to-action button leans toward the cursor.
+  - tilt        data-fx="tilt"       subtle 3D tilt on cards (works together with reveal on the same element).
+  - marquee     data-fx="marquee"    ticker strip, only when it fits the business. The commented block after the hero
+                                     is the markup; its items must be real services or facts, never invented.
+  Cursor effects (spotlight, magnetic, tilt) run only with a mouse (not touch) and without prefers-reduced-motion.
+  Under prefers-reduced-motion reveal and parallax stay static and the marquee does not move. If the script fails,
+  all content stays visible. Do not combine magnetic with tilt, or reveal with magnetic, on one element.
 -->
 <html lang="he" dir="rtl">
 <head>
@@ -48,7 +61,6 @@
         },
       },
     };
-    document.documentElement.classList.add("js");
   </script>
 
   <style>
@@ -83,13 +95,39 @@
     .btn-accent { background: var(--c-accent); color: var(--c-accent-ink); }
     .btn-ghost { border: 2px solid currentColor; }
 
-    /* Scroll reveal: subtle, only with JS, never under reduced motion */
-    .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
-    .js .reveal.is-visible { opacity: 1; transform: none; }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .js .reveal { opacity: 1; transform: none; transition: none; }
       .btn { transition: none; }
+    }
+
+    /* ============ EFFECTS (opt-in via data-fx, see the comment at the top) ============ */
+    /* reveal: content is hidden only after the script marks the page .fx-ready; anything already in view is never hidden */
+    [data-fx~="reveal"] { transition: opacity .6s ease, translate .6s ease; }
+    .fx-ready [data-fx~="reveal"]:not(.is-visible) { opacity: 0; translate: 0 16px; }
+    /* parallax: the target sits inside an overflow-hidden frame; the scale keeps its edges hidden while it shifts */
+    [data-fx~="parallax"].fx-on { transform: translate3d(0, var(--fx-py, 0%), 0) scale(1.18); will-change: transform; }
+    /* spotlight: a glow layer behind the content that follows the cursor */
+    [data-fx~="spotlight"] { position: relative; isolation: isolate; }
+    [data-fx~="spotlight"]::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit; opacity: 0; transition: opacity .4s;
+      background: radial-gradient(480px circle at var(--fx-x, 50%) var(--fx-y, 30%), color-mix(in srgb, var(--c-accent) 20%, transparent), transparent 65%); }
+    [data-fx~="spotlight"].fx-lit::before { opacity: 1; }
+    /* magnetic: the script sets --fx-tx / --fx-ty while the cursor is near */
+    [data-fx~="magnetic"] { transform: translate3d(var(--fx-tx, 0px), var(--fx-ty, 0px), 0); }
+    /* tilt: the script sets --fx-rx / --fx-ry while the cursor is over the card */
+    [data-fx~="tilt"] { transition: transform .35s ease, box-shadow .35s ease; }
+    [data-fx~="tilt"].fx-tilting { transform: perspective(900px) rotateX(var(--fx-rx, 0deg)) rotateY(var(--fx-ry, 0deg)); box-shadow: var(--shadow); transition: transform .08s linear, box-shadow .35s ease; }
+    [data-fx~="reveal"][data-fx~="tilt"] { transition: opacity .6s ease, translate .6s ease, transform .35s ease, box-shadow .35s ease; }
+    /* marquee: without the script (or under reduced motion) the items simply wrap and stay visible and static */
+    .fx-marquee { overflow: hidden; overflow: clip; }
+    .fx-marquee__track { display: flex; flex-wrap: wrap; --fx-shift: -1; }
+    [dir="rtl"] .fx-marquee__track { --fx-shift: 1; }
+    .fx-marquee__track > * { display: inline-flex; align-items: center; gap: 1.5rem; padding: 1rem 1.5rem; font-weight: 700; white-space: nowrap; }
+    .fx-marquee__track > *::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c-muted); }
+    .fx-marquee.fx-on .fx-marquee__track { flex-wrap: nowrap; width: max-content; animation: fx-marquee var(--fx-marquee-time, 40s) linear infinite; }
+    .fx-marquee.fx-on:hover .fx-marquee__track { animation-play-state: paused; }
+    @keyframes fx-marquee { to { transform: translateX(calc(var(--fx-shift) * 50%)); } }
+    @media (prefers-reduced-motion: reduce) {
+      [data-fx~="reveal"] { opacity: 1 !important; translate: none !important; transition: none; }
     }
 
     /* ============ GALLERY LAYOUTS (picked by image count, see initGallery) ============ */
@@ -164,7 +202,7 @@
   <main id="top">
     <!-- ============ HERO: one clear first screen, one primary action ============ -->
     <section data-section="hero" id="hero" class="max-w-6xl mx-auto px-5 pt-10 pb-16 md:pt-16 md:pb-24 grid md:grid-cols-2 gap-10 items-center">
-      <div class="reveal">
+      <div>
         <p class="text-sm font-bold tracking-wide text-muted mb-3">טקסט לדוגמה: תחום העסק</p>
         <h1 class="text-4xl md:text-6xl font-extrabold leading-[1.1] text-ink">טקסט לדוגמה: כותרת מעובדות ידועות</h1>
         <p class="mt-5 text-lg text-muted max-w-prose">טקסט לדוגמה: משפט אחד שמסביר מה העסק עושה.</p>
@@ -173,29 +211,41 @@
           <a href="https://wa.me/972000000000" class="btn btn-ghost text-ink">וואטסאפ</a>
         </div>
       </div>
-      <div class="reveal rounded-card overflow-hidden shadow-card" style="aspect-ratio: 4 / 5;">
+      <div class="rounded-card overflow-hidden shadow-card" style="aspect-ratio: 4 / 5;">
         <!-- Hero image: <img src="images/hero/hero-01.webp" alt="..." width="1200" height="1500" class="w-full h-full object-cover" fetchpriority="high"> -->
         <div class="ph w-full h-full" role="img" aria-label="מקום לתמונה"></div>
       </div>
     </section>
 
+    <!-- ============ MARQUEE (optional): ticker strip, use only when it fits the business ============
+         Uncomment to use. Items must be real services or facts supplied by the client, never invented.
+    <div data-section="marquee" data-optional data-fx="marquee" class="fx-marquee border-y border-line bg-surface" aria-hidden="true">
+      <div class="fx-marquee__track">
+        <span>טקסט לדוגמה: שירות</span>
+        <span>טקסט לדוגמה: שירות</span>
+        <span>טקסט לדוגמה: שירות</span>
+        <span>טקסט לדוגמה: שירות</span>
+      </div>
+    </div>
+    -->
+
     <!-- ============ SERVICES ============ -->
     <section data-section="services" id="services" class="bg-surface border-y border-line">
       <div class="max-w-6xl mx-auto px-5 py-16 md:py-24">
-        <h2 class="reveal text-3xl md:text-4xl font-extrabold mb-10">השירותים</h2>
+        <h2 data-fx="reveal" class="text-3xl md:text-4xl font-extrabold mb-10">השירותים</h2>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <!-- One card per real service -->
-          <article class="reveal rounded-card border border-line bg-bg p-6">
+          <article data-fx="reveal" class="rounded-card border border-line bg-bg p-6">
             <span class="inline-grid place-items-center w-11 h-11 rounded-full bg-primary text-primary-ink font-bold mb-4" aria-hidden="true">1</span>
             <h3 class="text-lg font-bold mb-2">טקסט לדוגמה: שירות</h3>
             <p class="text-muted">טקסט לדוגמה: תיאור קצר.</p>
           </article>
-          <article class="reveal rounded-card border border-line bg-bg p-6">
+          <article data-fx="reveal" class="rounded-card border border-line bg-bg p-6">
             <span class="inline-grid place-items-center w-11 h-11 rounded-full bg-primary text-primary-ink font-bold mb-4" aria-hidden="true">2</span>
             <h3 class="text-lg font-bold mb-2">טקסט לדוגמה: שירות</h3>
             <p class="text-muted">טקסט לדוגמה: תיאור קצר.</p>
           </article>
-          <article class="reveal rounded-card border border-line bg-bg p-6">
+          <article data-fx="reveal" class="rounded-card border border-line bg-bg p-6">
             <span class="inline-grid place-items-center w-11 h-11 rounded-full bg-primary text-primary-ink font-bold mb-4" aria-hidden="true">3</span>
             <h3 class="text-lg font-bold mb-2">טקסט לדוגמה: שירות</h3>
             <p class="text-muted">טקסט לדוגמה: תיאור קצר.</p>
@@ -206,11 +256,11 @@
 
     <!-- ============ ABOUT (optional) ============ -->
     <section data-section="about" data-optional id="about" class="max-w-6xl mx-auto px-5 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
-      <div class="reveal rounded-card overflow-hidden" style="aspect-ratio: 4 / 3;">
+      <div data-fx="reveal" class="rounded-card overflow-hidden" style="aspect-ratio: 4 / 3;">
         <!-- <img src="images/about/about-01.webp" alt="..." width="1200" height="900" loading="lazy" class="w-full h-full object-cover"> -->
         <div class="ph w-full h-full" role="img" aria-label="מקום לתמונה"></div>
       </div>
-      <div class="reveal">
+      <div data-fx="reveal">
         <h2 class="text-3xl md:text-4xl font-extrabold mb-4">אודות</h2>
         <p class="text-muted text-lg leading-relaxed">טקסט לדוגמה: רק תוכן אמיתי שהלקוח מסר.</p>
       </div>
@@ -218,7 +268,7 @@
 
     <!-- ============ GALLERY: layout picked by image count ============ -->
     <section data-section="gallery" id="gallery" class="max-w-6xl mx-auto px-5 py-16 md:py-24">
-      <h2 class="reveal text-3xl md:text-4xl font-extrabold mb-10">עבודות</h2>
+      <h2 data-fx="reveal" class="text-3xl md:text-4xl font-extrabold mb-10">עבודות</h2>
       <!--
         data-layout="auto" lets initGallery pick: 1 wide | 2 equal | 3 in a row | 4 = 2x2 |
         5 = large + 2x2 | 6 = 3x2 | 7+ = carousel with dots.
@@ -237,9 +287,9 @@
     <!-- ============ BEFORE / AFTER (optional) ============ -->
     <section data-section="before-after" data-optional id="before-after" class="bg-surface border-y border-line">
       <div class="max-w-6xl mx-auto px-5 py-16 md:py-24">
-        <h2 class="reveal text-3xl md:text-4xl font-extrabold mb-10">לפני ואחרי</h2>
+        <h2 data-fx="reveal" class="text-3xl md:text-4xl font-extrabold mb-10">לפני ואחרי</h2>
         <!-- One pair per real before/after set; both images share one aspect ratio -->
-        <div class="reveal grid grid-cols-2 gap-3 md:gap-5">
+        <div data-fx="reveal" class="grid grid-cols-2 gap-3 md:gap-5">
           <figure>
             <div class="ph rounded-card" style="aspect-ratio: 3 / 4;" role="img" aria-label="מקום לתמונה"></div>
             <figcaption class="mt-2 text-center font-bold text-muted">לפני</figcaption>
@@ -254,7 +304,7 @@
 
     <!-- ============ VIDEOS: carousel, one active slide ============ -->
     <section data-section="videos" id="videos" class="max-w-6xl mx-auto px-5 py-16 md:py-24">
-      <h2 class="reveal text-3xl md:text-4xl font-extrabold mb-10">סרטונים</h2>
+      <h2 data-fx="reveal" class="text-3xl md:text-4xl font-extrabold mb-10">סרטונים</h2>
       <!--
         Hosted slide (nothing loads until active):
           <div class="vframe portrait" style="--ratio: 720 / 1280;" data-slide>
@@ -281,9 +331,9 @@
     <!-- ============ TESTIMONIALS (optional, real quotes only) ============ -->
     <section data-section="testimonials" data-optional id="testimonials" class="bg-primary text-primary-ink">
       <div class="max-w-6xl mx-auto px-5 py-16 md:py-24">
-        <h2 class="reveal text-3xl md:text-4xl font-extrabold mb-10">המלצות</h2>
+        <h2 data-fx="reveal" class="text-3xl md:text-4xl font-extrabold mb-10">המלצות</h2>
         <div class="grid md:grid-cols-3 gap-5">
-          <blockquote class="reveal rounded-card p-6" style="background: color-mix(in srgb, var(--c-primary-ink) 10%, transparent);">
+          <blockquote data-fx="reveal" class="rounded-card p-6" style="background: color-mix(in srgb, var(--c-primary-ink) 10%, transparent);">
             <p class="text-lg leading-relaxed">טקסט לדוגמה: ציטוט אמיתי בלבד.</p>
             <footer class="mt-4 font-bold">טקסט לדוגמה: שם הממליץ</footer>
           </blockquote>
@@ -293,8 +343,8 @@
 
     <!-- ============ SERVICE AREAS (optional) ============ -->
     <section data-section="service-areas" data-optional id="service-areas" class="max-w-6xl mx-auto px-5 py-16 md:py-24">
-      <h2 class="reveal text-3xl md:text-4xl font-extrabold mb-8">אזורי שירות</h2>
-      <ul class="reveal flex flex-wrap gap-3">
+      <h2 data-fx="reveal" class="text-3xl md:text-4xl font-extrabold mb-8">אזורי שירות</h2>
+      <ul data-fx="reveal" class="flex flex-wrap gap-3">
         <li class="rounded-full border border-line bg-surface px-5 py-2 font-medium">טקסט לדוגמה: אזור</li>
         <li class="rounded-full border border-line bg-surface px-5 py-2 font-medium">טקסט לדוגמה: אזור</li>
       </ul>
@@ -302,7 +352,7 @@
 
     <!-- ============ CONTACT ============ -->
     <section data-section="contact" id="contact" class="max-w-6xl mx-auto px-5 pb-16 md:pb-24">
-      <div class="reveal rounded-card bg-primary text-primary-ink p-8 md:p-14 text-center shadow-card">
+      <div data-fx="reveal" class="rounded-card bg-primary text-primary-ink p-8 md:p-14 text-center shadow-card">
         <h2 class="text-3xl md:text-4xl font-extrabold">צרו קשר</h2>
         <p class="mt-3 text-lg opacity-90">טקסט לדוגמה: משפט הזמנה קצר.</p>
         <div class="mt-8 flex flex-col sm:flex-row flex-wrap justify-center gap-3">
@@ -341,20 +391,119 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // ---- Scroll reveal (skipped under reduced motion) ----
+    // ---- Effects: opt-in via data-fx (see the comment at the top). Plain JS, no libraries ----
     (function () {
-      var items = document.querySelectorAll(".reveal");
-      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduce || !("IntersectionObserver" in window)) {
-        items.forEach(function (el) { el.classList.add("is-visible"); });
-        return;
+      var root = document.documentElement;
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+      var fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+      // Cursor effects need a real mouse and no reduced-motion preference; touch and pen events are ignored
+      function cursorOK(e) { return e.pointerType === "mouse" && fine.matches && !reduce.matches; }
+      function all(name) { return Array.prototype.slice.call(document.querySelectorAll('[data-fx~="' + name + '"]')); }
+      // Runs fn at most once per frame with the latest argument
+      function onFrame(fn) {
+        var id = 0, last;
+        return function (a) { last = a; if (!id) id = requestAnimationFrame(function () { id = 0; fn(last); }); };
       }
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); }
+
+      // reveal: elements already in view are never hidden; if anything throws, everything is shown
+      var rev = all("reveal");
+      function showAll() { rev.forEach(function (el) { el.classList.add("is-visible"); }); }
+      if (rev.length) {
+        try {
+          if (reduce.matches || !("IntersectionObserver" in window)) {
+            showAll();
+          } else {
+            rev.forEach(function (el) { if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add("is-visible"); });
+            root.classList.add("fx-ready");
+            var io = new IntersectionObserver(function (entries) {
+              entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); } });
+            }, { threshold: 0.12 });
+            rev.forEach(function (el) { if (!el.classList.contains("is-visible")) io.observe(el); });
+          }
+        } catch (err) { root.classList.remove("fx-ready"); showAll(); }
+      }
+
+      // parallax: shifts the media inside its overflow-hidden frame while the frame crosses the screen
+      var par = all("parallax");
+      if (par.length && !reduce.matches) {
+        par.forEach(function (el) { el.classList.add("fx-on"); });
+        var update = function () {
+          var vh = window.innerHeight;
+          par.forEach(function (el) {
+            var r = el.parentElement.getBoundingClientRect();
+            if (r.bottom < 0 || r.top > vh) return;
+            var p = (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2); // 1 at the bottom edge, -1 at the top edge
+            var amt = Math.min(parseFloat(el.getAttribute("data-fx-speed")) || 8, 9);
+            el.style.setProperty("--fx-py", (-p * amt).toFixed(2) + "%");
+          });
+        };
+        var paint = onFrame(update);
+        window.addEventListener("scroll", paint, { passive: true });
+        window.addEventListener("resize", paint);
+        update();
+      }
+
+      // spotlight: a glow that follows the cursor inside the element
+      all("spotlight").forEach(function (el) {
+        var inside = false;
+        var move = onFrame(function (e) {
+          if (!inside) return;
+          var r = el.getBoundingClientRect();
+          el.style.setProperty("--fx-x", e.clientX - r.left + "px");
+          el.style.setProperty("--fx-y", e.clientY - r.top + "px");
+          el.classList.add("fx-lit");
         });
-      }, { threshold: 0.12 });
-      items.forEach(function (el) { io.observe(el); });
+        el.addEventListener("pointermove", function (e) { if (cursorOK(e)) { inside = true; move(e); } });
+        el.addEventListener("pointerleave", function () { inside = false; el.classList.remove("fx-lit"); });
+      });
+
+      // tilt: rotates the card toward the cursor
+      all("tilt").forEach(function (el) {
+        var inside = false;
+        var move = onFrame(function (e) {
+          if (!inside) return;
+          var r = el.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+          el.style.setProperty("--fx-rx", (-py * 8).toFixed(2) + "deg");
+          el.style.setProperty("--fx-ry", (px * 8).toFixed(2) + "deg");
+          el.classList.add("fx-tilting");
+        });
+        el.addEventListener("pointermove", function (e) { if (cursorOK(e)) { inside = true; move(e); } });
+        el.addEventListener("pointerleave", function () { inside = false; el.classList.remove("fx-tilting"); });
+      });
+
+      // magnetic: the element leans toward the cursor while it is within 48px
+      var mag = all("magnetic");
+      if (mag.length) {
+        var setPull = function (el, x, y) {
+          el._fxx = x; el._fxy = y;
+          el.style.setProperty("--fx-tx", x + "px");
+          el.style.setProperty("--fx-ty", y + "px");
+        };
+        var pull = onFrame(function (e) {
+          mag.forEach(function (el) {
+            var r = el.getBoundingClientRect();
+            var dx = e.clientX - (r.left + r.width / 2 - (el._fxx || 0));
+            var dy = e.clientY - (r.top + r.height / 2 - (el._fxy || 0));
+            var near = Math.abs(dx) < r.width / 2 + 48 && Math.abs(dy) < r.height / 2 + 48;
+            setPull(el, near ? Math.max(-10, Math.min(10, dx * 0.25)) : 0, near ? Math.max(-8, Math.min(8, dy * 0.3)) : 0);
+          });
+        });
+        document.addEventListener("pointermove", function (e) { if (cursorOK(e)) pull(e); });
+        root.addEventListener("pointerleave", function () { mag.forEach(function (el) { setPull(el, 0, 0); }); });
+      }
+
+      // marquee: duplicates the items so the loop is seamless; without this code the items just wrap and stay visible
+      all("marquee").forEach(function (el) {
+        var track = el.querySelector(".fx-marquee__track");
+        if (!track || reduce.matches || !track.children.length) return;
+        var items = Array.prototype.slice.call(track.children);
+        function add(list) { list.forEach(function (n) { var c = n.cloneNode(true); c.setAttribute("aria-hidden", "true"); track.appendChild(c); }); }
+        el.classList.add("fx-on");
+        var reps = Math.ceil(el.clientWidth / Math.max(track.scrollWidth, 1));
+        for (var i = 1; i < reps; i++) add(items);
+        add(Array.prototype.slice.call(track.children));
+      });
     })();
 
     // ---- Gallery: layout by image count, carousel dots, lightbox ----
