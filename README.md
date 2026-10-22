@@ -22,6 +22,10 @@ flowchart TD
 
 **Landing template.** `sites/_template-landing` is a modern Hebrew RTL base: palette in CSS variables, a gallery laid out by image count, a video carousel and optional sections the builder fills only with real content.
 
+**Effects library.** The landing template ships its own small effects library in plain CSS and JavaScript: scroll reveal, parallax, a cursor spotlight, a magnetic call-to-action button, card tilt and a ticker strip. Each effect is switched on per element with a `data-fx` attribute. There is no animation library, canvas or WebGL; cursor effects turn off on touch devices and under `prefers-reduced-motion`, and content stays visible if the script fails.
+
+**Design skill.** The builder reads [`.claude/skills/agency-site-design-rules`](.claude/skills/agency-site-design-rules/SKILL.md) before every build or design update: quality bar, default design directions, rules for effects and trade-themed decorative elements, and a filter for third-party design skills. Third-party skills are installed locally and are not redistributed in this repo.
+
 ## The four agents
 
 Definitions are in [`.claude/agents/`](.claude/agents/) (written in Hebrew).
@@ -62,9 +66,9 @@ Claude Code subagents · static HTML + Tailwind (CDN) · Supabase (Postgres + RL
 ## Project structure
 
 ```
-.claude/   # agents, /newclient and /updatesite commands, skill, permission settings
+.claude/   # agents, /newclient and /updatesite commands, skills, permission settings
 db/        # business DB schema
-docs/      # project plan (Hebrew)
+docs/      # project plan, backlog and current task (Hebrew)
 sites/     # shared templates + two demo sites; real client sites are local-only (gitignored)
 tools/     # small validation scripts (youtube_id.py checks YouTube links)
 CLAUDE.md  # project rules for Claude Code (Hebrew)
@@ -89,6 +93,8 @@ There are no real clients yet.
 - The `invoices` table exists, but no agent writes to it yet.
 - Supabase Free allows 2 active projects and pauses idle ones, so more clients or a live site need a paid plan.
 
-More detail: [`CLAUDE.md`](CLAUDE.md) and [`docs/project-plan.md`](docs/project-plan.md) (both in Hebrew).
+Open work is tracked as numbered tasks in [`docs/BACKLOG.md`](docs/BACKLOG.md).
+
+More detail: [`CLAUDE.md`](CLAUDE.md) and [`docs/project-plan.md`](docs/project-plan.md) (all in Hebrew).
 
 License: MIT
